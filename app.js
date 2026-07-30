@@ -665,6 +665,21 @@
         setTimeout(() => { btn.textContent = original; btn.disabled = false; }, 3000);
       });
     }
+
+    const leadForm = $('#lead-form');
+    if (leadForm) {
+      leadForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const btn = leadForm.querySelector('button');
+        const success = $('#lead-form-success');
+        const original = btn.textContent;
+        btn.textContent = '✓ Request Received';
+        btn.disabled = true;
+        success.style.display = 'block';
+        leadForm.reset();
+        setTimeout(() => { btn.textContent = original; btn.disabled = false; success.style.display = 'none'; }, 4000);
+      });
+    }
   }
 
   function init() {

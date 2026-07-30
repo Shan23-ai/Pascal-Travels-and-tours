@@ -427,6 +427,52 @@ button { font-family: inherit; cursor: pointer; border: none; }
 
 /* ===== SECTIONS ===== */
 .section { padding: clamp(3rem, 6vw, 5rem) 0; }
+.sticky-cta {
+  position: fixed; right: 1rem; bottom: 1rem; z-index: 140;
+  display: flex; gap: 0.65rem; flex-wrap: wrap;
+}
+.sticky-cta .btn {
+  box-shadow: 0 12px 30px rgba(30, 58, 95, 0.18);
+}
+.conversion-strip {
+  display: grid; grid-template-columns: 1.2fr 0.95fr; gap: 1.4rem;
+  align-items: stretch; margin-top: -0.6rem;
+}
+.conversion-card {
+  border-radius: var(--radius-lg); padding: 1.7rem;
+  box-shadow: var(--shadow-soft);
+}
+.promo-card {
+  background: linear-gradient(135deg, var(--white) 0%, var(--skyblue-pale) 100%);
+  border: 2px solid rgba(255,215,0,0.22);
+}
+.form-card {
+  background: linear-gradient(135deg, #143F7F 0%, #1E3A5F 100%);
+  color: var(--white);
+}
+.conversion-card h2, .conversion-card h3 { color: inherit; margin-bottom: 0.7rem; }
+.conversion-card p { color: inherit; opacity: 0.9; }
+.conversion-highlights { display: grid; gap: 0.45rem; margin-top: 1rem; font-weight: 700; color: var(--text-dark); }
+.form-card .conversion-highlights div { color: rgba(255,255,255,0.95); }
+.lead-form { display: grid; gap: 0.7rem; margin-top: 1rem; }
+.lead-form input, .lead-form select {
+  width: 100%; padding: 0.75rem 0.9rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(255,255,255,0.96); color: var(--text-dark); font-size: 0.95rem; font-family: inherit;
+}
+.lead-form select option { color: var(--text-dark); }
+.lead-form-note { font-size: 0.78rem; color: rgba(255,255,255,0.78); margin: 0; }
+.lead-form-success {
+  margin-top: 0.8rem; background: rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.3);
+  color: var(--white); padding: 0.8rem 1rem; border-radius: 10px; font-weight: 700;
+}
+.trust-row { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.2rem; }
+.trust-pill {
+  padding: 0.55rem 0.9rem; border-radius: 999px; background: var(--white);
+  color: var(--skyblue-navy); font-weight: 700; border: 1px solid rgba(135,206,235,0.24);
+  box-shadow: var(--shadow-soft);
+}
+@media (max-width: 900px) { .conversion-strip { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .sticky-cta { left: 0.8rem; right: 0.8rem; bottom: 0.8rem; justify-content: space-between; } .sticky-cta .btn { flex: 1; justify-content: center; } }
 .section-sky {
   background: linear-gradient(180deg, #A8DDF7 0%, #87CEEB 50%, #4FB3D9 100%);
   color: var(--white);

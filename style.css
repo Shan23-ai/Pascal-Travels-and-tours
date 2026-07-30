@@ -143,17 +143,18 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .brand { display: inline-flex; align-items: center; gap: .55rem; font-weight: 900; }
 .brand-logo { font-size: 1.6rem; }
 .brand-logo-custom {
-  width: 90px;
-  height: 36px;
+  width: 110px;
+  height: 44px;
   display: inline-grid;
   place-items: center;
   background: linear-gradient(135deg, #0B1A2C 0%, #142840 100%);
   border: 2px solid var(--golden);
-  border-radius: 10px;
+  border-radius: 12px;
   padding: 2px 6px;
   box-shadow: 0 4px 12px rgba(255,215,0,0.2);
+  overflow: hidden;
 }
-.brand-logo-custom svg { width: 100%; height: 100%; }
+.brand-logo-custom img { width: 100%; height: 100%; object-fit: cover; }
 .brand-text {
   font-size: 1.1rem;
   letter-spacing: -0.01em;
@@ -403,6 +404,16 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .trust-num { font-size: 1.8rem; font-weight: 900; }
 .trust-item span:last-child { font-size: 0.8rem; color: rgba(255,255,255,0.8); letter-spacing: 0.02em; }
 .trust-divider { width: 1px; height: 42px; background: rgba(255,255,255,0.2); }
+.hero-cta-bar {
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 0.7rem;
+  margin-top: 1.5rem;
+}
+.hero-cta-chip {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  padding: 0.6rem 0.95rem; border-radius: 999px; background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,215,0,0.35); color: var(--white);
+  font-size: 0.86rem; font-weight: 700; backdrop-filter: blur(8px);
+}
 .hero-scroll-hint {
   margin-top: 2.8rem;
   color: rgba(255,255,255,0.8);

@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Pascal Travels & Tour — Explore the World with Confidence</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main id="app-root" class="app-root">
+
+    <!-- NAVIGATION -->
+    <nav id="navbar" class="navbar">
+      <div class="nav-inner">
+        <a href="#" class="brand" data-nav="home" aria-label="Pascal Travels & Tour">
+          <div class="brand-logo-custom" title="Pascal Travels & Tour">
+            <svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="goldSwoosh" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#F7D463"/>
+                  <stop offset="50%" stop-color="#FFD700"/>
+                  <stop offset="100%" stop-color="#C89B1E"/>
+                </linearGradient>
+                <linearGradient id="blueP" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#0B2E69"/>
+                  <stop offset="100%" stop-color="#143F7F"/>
+                </linearGradient>
+              </defs>
+              <ellipse cx="64" cy="52" rx="56" ry="44" fill="none" stroke="url(#goldSwoosh)" stroke-width="5" stroke-dasharray="250" stroke-dashoffset="95" transform="rotate(22 64 52)"/>
+              <path d="M22 20 L22 75 Q22 80 27 80 L44 80 Q49 80 49 75 L49 50 Q64 50 72 40 Q80 28 72 17 Q66 11 56 11 L27 11 Q22 11 22 20 Z M44 40 L44 22 L55 22 Q60 22 60 27 Q60 36 55 40 Z" fill="url(#blueP)"/>
+              <g transform="translate(96, 22)">
+                <path d="M40 8 L40 32 L12 32 L12 42 L40 42 L40 54 C40 60 32 68 24 68 L20 76 L60 76 L56 68 C50 68 40 62 40 54 L40 42 L76 42 L76 32 L40 32 Z" fill="#E53E3E"/>
+              </g>
+              <text x="175" y="42" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="32" fill="#0B2E69">PASCAL</text>
+              <text x="175" y="75" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="26" fill="#E53E3E">TRAVELS<span fill="#0B2E69">&amp;</span><span fill="#143F7F">TOURS</span></text>
+            </svg>
+          </div>
+        </a>
+        <button id="nav-toggle" class="nav-toggle" aria-label="Toggle menu">
+          <span></span><span></span><span></span>
+        </button>
+        <ul id="nav-links" class="nav-links">
+          <li><a href="#" data-nav="home">Home</a></li>
+          <li><a href="#" data-nav="services">Services</a></li>
+          <li><a href="#" data-nav="visas">Visa Packages</a></li>
+          <li><a href="#" data-nav="work">Work Visas</a></li>
+          <li><a href="#" data-nav="study">Study</a></li>
+          <li><a href="#" data-nav="pr">Canada PR</a></li>
+          <li><a href="#" data-nav="tours">East Africa</a></li>
+          <li><a href="#" data-nav="contact">Contact</a></li>
+        </ul>
+        <div class="nav-cta-group">
+          <button class="btn btn-outline-nav btn-sm" data-nav="work">💼 Apply for Jobs</button>
+          <button id="nav-cta" class="btn btn-gold btn-sm" data-nav="contact">✉️ Contact Us</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ============= HOME VIEW ============= -->
+    <section id="view-home" class="view view-active">
+
+      <!-- HERO / PROFESSIONAL BANNER -->
+      <header class="hero hero-pascal">
+        <div class="canada-ribbon" data-nav="pr" title="Click to explore Canada Permanent Residency">
+          <div class="canada-ribbon-inner">
+            <span class="canada-ribbon-now">AVAILABLE NOW</span>
+            <span class="canada-ribbon-title">🇨🇦 CANADA<br/>PERMANENT RESIDENCY</span>
+            <span class="canada-ribbon-cta">BOOK NOW →</span>
+          </div>
+        </div>
+        <div class="hero-bg">
+          <div class="hero-bg-img hero-bg-1" role="img" aria-label="Happy diverse travelers laughing with luggage at the airport"></div>
+          <div class="hero-bg-img hero-bg-2" role="img" aria-label="Happy young couple on tropical beach vacation"></div>
+          <div class="hero-bg-img hero-bg-3" role="img" aria-label="Smiling group of friends on European city tour"></div>
+          <div class="hero-bg-overlay"></div>
+        </div>
+        <div class="hero-particles" aria-hidden="true">
+          <span>✈️</span><span>🌍</span><span>🗺️</span><span>🧳</span><span>🌴</span><span>📸</span>
+        </div>
+        <div class="hero-inner hero-inner-pascal">
+          <div class="hero-tagline-wrap">
+            <span class="hero-chip"><span class="chip-dot"></span> Trust · Excellence · Global Opportunities · Est. 2014</span>
+          </div>
+          <div class="hero-logo-row" aria-hidden="true">
+            <div class="hero-mini-logo">
+              <svg viewBox="0 0 300 100" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="goldSwooshHero" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#F7D463"/>
+                    <stop offset="50%" stop-color="#FFD700"/>
+                    <stop offset="100%" stop-color="#C89B1E"/>
+                  </linearGradient>
+                  <linearGradient id="bluePHero" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#143F7F"/>
+                    <stop offset="100%" stop-color="#0B2E69"/>
+                  </linearGradient>
+                </defs>
+                <ellipse cx="64" cy="52" rx="56" ry="44" fill="none" stroke="url(#goldSwooshHero)" stroke-width="5" stroke-dasharray="250" stroke-dashoffset="95" transform="rotate(22 64 52)"/>
+                <path d="M22 20 L22 75 Q22 80 27 80 L44 80 Q49 80 49 75 L49 50 Q64 50 72 40 Q80 28 72 17 Q66 11 56 11 L27 11 Q22 11 22 20 Z M44 40 L44 22 L55 22 Q60 22 60 27 Q60 36 55 40 Z" fill="url(#bluePHero)"/>
+                <g transform="translate(96, 22)">
+                  <path d="M40 8 L40 32 L12 32 L12 42 L40 42 L40 54 C40 60 32 68 24 68 L20 76 L60 76 L56 68 C50 68 40 62 40 54 L40 42 L76 42 L76 32 L40 32 Z" fill="#FFD700"/>
+                </g>
+                <text x="175" y="42" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="30" fill="#ffffff">PASCAL</text>
+                <text x="175" y="75" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="24" fill="#FFD700">TRAVELS<span fill="#ffffff">&amp;</span><span fill="#ffffff">TOURS</span></text>
+              </svg>
+            </div>
+            <h4 class="hero-brand-mini">PASCAL&nbsp;TRAVELS&nbsp;&amp;&nbsp;TOURS</h4>
+          </div>
+          <h1 class="hero-title hero-title-pascal">
+            Explore the World<br/>
+            with <span class="text-gold-gradient hero-underline">Confidence.</span>
+          </h1>
+          <p class="hero-sub hero-sub-pascal">
+            Your trusted partner for international visas, work placements, study abroad,
+            Canada permanent residency, and unforgettable East African safaris.
+            With over a decade of expertise and <strong class="text-white">98% visa approval rate</strong>,
+            we turn your global dreams into reality — one journey at a time.
+          </p>
+          <div class="hero-ctas hero-ctas-pascal">
+            <button class="btn btn-red btn-lg btn-shadow" data-nav="work" data-scroll-nav="work">
+              💼 Apply for Jobs
+            </button>
+            <button class="btn btn-gold btn-lg btn-shadow" data-nav="tours" data-scroll-nav="tours">
+              🌴 Book a Tour
+            </button>
+            <button class="btn btn-outline-white btn-lg" data-nav="contact" data-scroll-nav="contact">
+              ✉️ Contact Us
+            </button>
+          </div>
+          <div class="landmarks-strip" aria-hidden="true">
+            <div class="landmark lm-beach"><div class="lm-emoji">🌴🏖️</div><div class="lm-name">Zanzibar</div></div>
+            <div class="landmark lm-burj"><div class="lm-emoji">🏙️</div><div class="lm-name">Dubai</div></div>
+            <div class="landmark lm-bigben"><div class="lm-emoji">🕰️</div><div class="lm-name">London</div></div>
+            <div class="landmark lm-pisa"><div class="lm-emoji">🗼</div><div class="lm-name">Pisa</div></div>
+            <div class="landmark lm-rome"><div class="lm-emoji">🏛️</div><div class="lm-name">Rome</div></div>
+            <div class="landmark lm-cn"><div class="lm-emoji">🍁🗼</div><div class="lm-name">Toronto</div></div>
+            <div class="landmark lm-safari"><div class="lm-emoji">🦒🚙</div><div class="lm-name">Safari</div></div>
+          </div>
+          <div class="hero-trust">
+            <div class="trust-item"><span class="trust-num text-gold">30+</span><span>Countries</span></div>
+            <div class="trust-divider"></div>
+            <div class="trust-item"><span class="trust-num text-gold">25K+</span><span>Happy Travelers</span></div>
+            <div class="trust-divider"></div>
+            <div class="trust-item"><span class="trust-num text-gold">98%</span><span>Visa Success</span></div>
+            <div class="trust-divider"></div>
+            <div class="trust-item"><span class="trust-num text-gold">12+</span><span>Years Experience</span></div>
+          </div>
+          <div class="hero-scroll-hint">
+            <span>Scroll to explore our services</span>
+            <div class="scroll-arrow">↓</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- SERVICES -->
+      <section id="services" class="section section-light">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow text-gold">OUR SERVICES</span>
+            <h2 class="section-title">Everything You Need, <span class="text-accent-red">One Agency.</span></h2>
+            <p class="section-sub">Six specialized service lines covering the full spectrum of your travel, work, and immigration ambitions.</p>
+          </div>
+          <div id="services-grid" class="grid grid-3"></div>
+        </div>
+      </section>
+
+      <!-- VISA PACKAGES -->
+      <section id="visas" class="section section-sky">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow text-white-op">TRAVEL VISAS</span>
+            <h2 class="section-title text-white">Book Your Visa To These <span class="text-gold-gradient">Top Destinations</span></h2>
+            <p class="section-sub text-white-op">Fast, transparent processing with end-to-end document assistance and visa tracking.</p>
+          </div>
+
+          <div class="tabs" id="visa-tabs">
+            <button class="tab tab-active" data-tab="travel">✈️ Travel Visas</button>
+            <button class="tab" data-tab="work">🛠️ Work Visas</button>
+            <button class="tab" data-tab="study">🎓 Study Visas</button>
+          </div>
+
+          <div id="visa-packages" class="grid grid-3"></div>
+        </div>
+      </section>
+
+      <!-- CANADA PR HIGHLIGHT -->
+      <section id="pr" class="section section-light">
+        <div class="container">
+          <div class="pr-banner">
+            <div class="pr-banner-text">
+              <span class="eyebrow text-accent-red">PERMANENT RESIDENCY</span>
+              <h2>🍁 Move to Canada & Start <span class="text-gold-gradient">A New Life</span></h2>
+              <p>Express Entry, PNP nominations, Family Sponsorship — ICCRC-regulated consultants maximizing your CRS score with proven strategies.</p>
+              <div class="pr-features">
+                <div>✅ Profile creation & CRS optimization</div>
+                <div>✅ 600-point PNP nomination strategies</div>
+                <div>✅ Post-landing settlement support</div>
+              </div>
+              <button class="btn btn-gold" data-select-ca="ca-expressentry">View Canada PR Packages</button>
+            </div>
+            <div class="pr-banner-visual">
+              <img id="pr-flag" alt="Canada" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EAST AFRICA -->
+      <section id="tours" class="section section-sky">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow text-white-op">LOCAL TRAVEL · EAST AFRICA</span>
+            <h2 class="section-title text-white">Safaris, Beaches & <span class="text-gold-gradient">Wild Gorillas.</span></h2>
+            <p class="section-sub text-white-op">Expertly curated tours across Kenya, Tanzania, Uganda, Rwanda, and Zanzibar — with local English-speaking guides.</p>
+          </div>
+          <div id="tours-grid" class="grid grid-3"></div>
+        </div>
+      </section>
+
+      <!-- COMPANY PROFILE :: ABOUT US + MISSION + VISION + OUR SERVICES -->
+      <section class="section section-sky" id="company">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow text-gold-gradient">COMPANY PROFILE · Version 2026</span>
+            <h2 class="section-title text-white">About <span class="text-gold-gradient">Pascal Tours & Travels.</span></h2>
+            <p class="section-sub text-white-op">Prepared For: Clients, Partners, and Global Opportunity Seekers.</p>
+          </div>
+
+          <!-- ABOUT US -->
+          <div class="card card-white about-card">
+            <h3 class="about-title"><span class="about-badge">📌</span> ABOUT US</h3>
+            <p class="about-text">
+              <strong>Pascal Tours and Travels</strong> is a leading consultancy dedicated to
+              <em>transforming dreams into reality</em> by providing exceptional travel and international
+              opportunities. We specialize in facilitating <strong>overseas employment</strong>,
+              <strong>visa applications</strong>, <strong>study abroad services</strong>, and
+              <strong>comprehensive travel consultations</strong>. Our unwavering commitment to excellence
+              ensures that we deliver reliable, professional, and transparent services that streamline
+              your journey to global opportunities. With personalized support and expert guidance,
+              we empower our clients to navigate the intricacies of international travel, education,
+              and employment confidently.
+            </p>
+          </div>
+
+          <!-- MISSION · VISION · SERVICES  -->
+          <div class="grid grid-3 mv-grid">
+            <div class="card card-sky mv-card">
+              <div class="mv-icon">👁️</div>
+              <h4>VISION</h4>
+              <p>To be the world's most trusted and beloved travel agency, inspiring unforgettable journeys and creating lifelong memories for our clients.</p>
+            </div>
+            <div class="card card-gold mv-card">
+              <div class="mv-icon">🎯</div>
+              <h4>MISSION</h4>
+              <p>At Pascal Travels and Tours, our mission is to provide exceptional travel experiences that exceed our clients expectations. We connect individuals with global opportunities by delivering professional travel, visa, and overseas employment support services marked by integrity, excellence, and unwavering reliability.</p>
+            </div>
+            <div class="card card-white mv-card">
+              <div class="mv-icon">🤝</div>
+              <h4>OUR SERVICES</h4>
+              <ul class="mv-list">
+                <li>• Deliver <strong>personalized</strong> and expert travel planning</li>
+                <li>• Offer <strong>unique & immersive</strong> experiences</li>
+                <li>• Foster <strong>long-term relationships</strong> with our clients</li>
+                <li>• Continuous <strong>innovate & improve</strong> our services</li>
+                <li>• Promote <strong>sustainable & responsible</strong> tourism practices</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 6 SERVICE TYPES MATRIX (from profile table) -->
+          <div class="section-header" style="margin-top:3rem;">
+            <span class="eyebrow text-white-op">SIX SPECIALIZED LINES</span>
+            <h3 class="section-title text-white">Service Delivery <span class="text-gold-gradient">Matrix.</span></h3>
+          </div>
+          <div class="grid grid-3 services-matrix">
+            <div class="svc-m-card">
+              <div class="svc-m-icon" style="background:linear-gradient(135deg,#FFD700,#E8A400);">💼</div>
+              <h5>Overseas Employment Facilitation</h5>
+              <p>Expert assistance in securing <strong>skilled & unskilled jobs abroad</strong> — from application to travel preparation.</p>
+            </div>
+            <div class="svc-m-card">
+              <div class="svc-m-icon" style="background:linear-gradient(135deg,#4FB3D9,#1E88E5);">🛂</div>
+              <h5>Visa Application Assistance</h5>
+              <p>Unmatched support in preparing and processing <strong>visa applications</strong> with clear requirements at every step.</p>
+            </div>
+            <div class="svc-m-card">
+              <div class="svc-m-icon" style="background:linear-gradient(135deg,#E53E3E,#C53030);">🎓</div>
+              <h5>Study Abroad Services</h5>
+              <p>Guidance on admissions, study visas, and seamless travel preparation for students heading overseas.</p>
+            </div>
+            <div class="svc-m-card">
+              <div class="svc-m-icon" style="background:linear-gradient(135deg,#1E3A5F,#0B2E69);">🇪🇺</div>
+              <h5>Schengen Visa Assistance</h5>
+              <p>Specialized help with accurate, complete, and <strong>compliant Schengen visa applications</strong> covering 27 nations.</p>
+            </div>
+            <div class="svc-m-card">
+              <div class="svc-m-icon" style="background:linear-gradient(135deg,#43A047,#2E7D32);">✈️</div>
+              <h5>Travel Consultancy</h5>
+              <p>Expert advice on travel requirements, destination procedures, and meticulous travel planning for every itinerary.</p>
+            </div>
+            <div class="svc-m-card">
+              <div class="svc-m-icon" style="background:linear-gradient(135deg,#8E44AD,#6A1B9A);">📁</div>
+              <h5>Documentation Support</h5>
+              <p>Organizing & preparing essential documents for visas, employment contracts, and study program enrollments.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHY CHOOSE PASCAL + CORE VALUES + TARGET CLIENTS -->
+      <section class="section section-light">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow text-gold">WHY PASCAL TOURS & TRAVELS</span>
+            <h2 class="section-title">Six Reasons Clients <span class="text-accent-red">Trust Us.</span></h2>
+          </div>
+          <div class="grid grid-3 why-choose">
+            <div class="wc-card">✅ Exceptional & personalized service</div>
+            <div class="wc-card">✅ Transparent processes & clear communication</div>
+            <div class="wc-card">✅ Dedicated support at every stage of your journey</div>
+            <div class="wc-card">✅ In-depth expertise in international travel & visa requirements</div>
+            <div class="wc-card">✅ Unwavering commitment to integrity & client satisfaction</div>
+            <div class="wc-card">✅ Dependable guidance for work, study, and travel abroad</div>
+          </div>
+
+          <!-- CORE VALUES TABLE -->
+          <div class="section-header" style="margin-top:3.5rem;">
+            <span class="eyebrow text-skyblue-deep">OUR CORE VALUES</span>
+            <h3 class="section-title">The Five <span class="text-gold-gradient">Pillars</span> of Everything We Do.</h3>
+          </div>
+          <div class="card card-white values-card">
+            <table class="values-table">
+              <thead>
+                <tr><th style="width:28%;">Core Value</th><th>What It Means For You</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><span class="value-dot" style="background:#1E88E5;"></span> Integrity</td><td>Highest standards of honesty, transparency, and ethical practices — every time.</td></tr>
+                <tr><td><span class="value-dot" style="background:#FFD700;"></span> Excellence</td><td>Relentless pursuit of quality. We don't stop until we exceed your expectations.</td></tr>
+                <tr><td><span class="value-dot" style="background:#0B2E69;"></span> Professionalism</td><td>High standards in every aspect of our work — documents, communication & delivery.</td></tr>
+                <tr><td><span class="value-dot" style="background:#E53E3E;"></span> Reliability</td><td>Trusted for dependable guidance and unwavering support when you need it most.</td></tr>
+                <tr><td><span class="value-dot" style="background:#43A047;"></span> Customer Focus</td><td>Client goals, needs, and successes are always at the heart of our operations.</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- TARGET CLIENTS -->
+          <div class="section-header" style="margin-top:3.5rem;">
+            <span class="eyebrow text-accent-red">OUR TARGET CLIENTS</span>
+            <h3 class="section-title">Who We <span class="text-gold-gradient">Serve.</span></h3>
+          </div>
+          <div class="grid grid-3 target-grid">
+            <div class="t-card"><div class="t-icon">👷</div><p><strong>Individuals</strong> seeking overseas employment opportunities.</p></div>
+            <div class="t-card"><div class="t-icon">🛠️</div><p><strong>Skilled & unskilled workers</strong> ready to advance their careers abroad.</p></div>
+            <div class="t-card"><div class="t-icon">🎓</div><p><strong>Students</strong> aspiring for international education overseas.</p></div>
+            <div class="t-card"><div class="t-icon">💼</div><p><strong>Professionals</strong> looking for career advancement abroad.</p></div>
+            <div class="t-card"><div class="t-icon">✈️</div><p><strong>Travelers</strong> needing expert visa and travel support services.</p></div>
+            <div class="t-card"><div class="t-icon">🌍</div><p><strong>Families</strong> planning emigration, PR, or once-in-a-lifetime tours.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CONTACT / FOOTER -->
+      <section id="contact" class="section section-dark">
+        <div class="container">
+          <div class="footer-top">
+            <div class="footer-col footer-brand">
+              <h3 class="brand-text text-gold">PASCAL<span class="brand-accent">TRAVELS</span>&<em>TOUR</em></h3>
+              <p>Explore the world with confidence. Premium visas, work abroad, study abroad, Canada PR, and curated East Africa tours — all under one roof.</p>
+              <div class="socials">
+                <span>📘</span><span>📸</span><span>🐦</span><span>💼</span><span>📺</span>
+              </div>
+            </div>
+            <div class="footer-col">
+              <h4>Services</h4>
+              <ul>
+                <li><a href="#" data-nav="services">Jobs Abroad</a></li>
+                <li><a href="#" data-nav="work">Work Visas</a></li>
+                <li><a href="#" data-nav="visas">Schengen & Travel</a></li>
+                <li><a href="#" data-nav="study">Study Visas</a></li>
+                <li><a href="#" data-nav="pr">Canada PR</a></li>
+                <li><a href="#" data-nav="tours">East Africa Tours</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>Popular Countries</h4>
+              <ul>
+                <li><a href="#" data-select="uae-tv">🇦🇪 UAE</a></li>
+                <li><a href="#" data-select="germany-wv">🇩🇪 Germany Work</a></li>
+                <li><a href="#" data-select="poland-wv">🇵🇱 Poland Work</a></li>
+                <li><a href="#" data-select="saudi-tv">🇸🇦 Saudi Arabia</a></li>
+                <li><a href="#" data-select="georgia-tv">🇬🇪 Georgia</a></li>
+                <li><a href="#" data-select="portugal-wv">🇵🇹 Portugal</a></li>
+              </ul>
+            </div>
+            <div class="footer-col contact-col">
+              <h4>Contact Us</h4>
+              <ul class="contact-list">
+                <li>📞 +254 705 205 903</li>
+                <li>📞 +254 753 731 136</li>
+                <li>📧 info@pascaltravels.co.ke</li>
+                <li>🌐 www.pascaltravels.co.ke</li>
+                <li>📍 Magomano B.S Complex, Along Tom Mboya Street,<br/>Opp. KTDA Plaza, Nairobi, Kenya.</li>
+                <li>🕘 Mon–Sat · 8:30 – 18:00</li>
+              </ul>
+              <form id="contact-form" class="contact-form">
+                <input type="text" placeholder="Your name" required />
+                <input type="email" placeholder="Your email" required />
+                <textarea placeholder="How can we help?" rows="2" required></textarea>
+                <button type="submit" class="btn btn-gold btn-sm">Send Message</button>
+              </form>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <span>© 2026 Pascal Travels & Tour. All rights reserved.</span>
+            <span class="text-accent-red">Licensed · Bonded · Insured ✦ Explore with Confidence</span>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ============= PACKAGE DETAIL VIEW ============= -->
+    <section id="view-package" class="view">
+      <div class="container package-detail">
+        <button class="btn-back" data-go-back="home">← Back</button>
+
+        <div id="package-hero" class="package-hero"></div>
+
+        <div class="package-cols">
+          <div class="package-left">
+            <div id="package-info" class="card card-white"></div>
+
+            <div id="requirements-block" class="card card-white">
+              <div class="requirements-header">
+                <h3>📋 Required Documents For This Package</h3>
+                <span class="eyebrow text-gold" id="req-count">0 documents</span>
+              </div>
+              <p class="req-intro">Once you choose a package, the specific requirements appear here. Upload each document in the submission step below.</p>
+              <div id="requirements-checklist" class="requirements-checklist"></div>
+            </div>
+          </div>
+
+          <aside class="package-right">
+            <div class="card card-gold pricing-card sticky">
+              <h3>Package Pricing</h3>
+              <div class="price-row">
+                <span>Visa Processing Fee</span>
+                <strong id="price-processing">$0</strong>
+              </div>
+              <div class="price-row">
+                <span>Flight Ticket (Included)</span>
+                <strong id="price-ticket">$0</strong>
+              </div>
+              <div class="price-row price-total">
+                <span>Total (Est.)</span>
+                <strong id="price-total">$0</strong>
+              </div>
+              <ul class="pricing-includes">
+                <li>✔️ Document preparation & review</li>
+                <li>✔️ Application filing & embassy liaison</li>
+                <li>✔️ Biometrics appointment booking</li>
+                <li>✔️ End-to-end case tracking</li>
+                <li>✔️ Round-trip flight ticket</li>
+              </ul>
+              <button id="btn-start-app" class="btn btn-red btn-lg btn-block">Start Application →</button>
+              <p class="secure-badge">🔒 Secure booking · SSL encrypted · 24/7 support</p>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= DOC SUBMISSION STEPPER VIEW ============= -->
+    <section id="view-submit" class="view">
+      <div class="container submit-view">
+        <button class="btn-back" data-go-back="package">← Back to package</button>
+
+        <div class="stepper-wrap card card-white">
+          <div class="stepper" id="stepper">
+            <div class="step step-active" data-step="1"><div class="step-num">1</div><div class="step-label">Personal Info</div></div>
+            <div class="step-line"></div>
+            <div class="step" data-step="2"><div class="step-num">2</div><div class="step-label">Documents</div></div>
+            <div class="step-line"></div>
+            <div class="step" data-step="3"><div class="step-num">3</div><div class="step-label">Review & Auth</div></div>
+            <div class="step-line"></div>
+            <div class="step" data-step="4"><div class="step-num">4</div><div class="step-label">Payment</div></div>
+          </div>
+        </div>
+
+        <!-- STEP 1: PERSONAL INFO -->
+        <div id="step-1" class="step-panel card card-white step-active">
+          <h3 class="step-title">Step 1 · Personal Information</h3>
+          <p class="step-sub">Enter applicant details exactly as shown on passport.</p>
+          <form id="form-personal" class="form-grid-2">
+            <div class="form-field">
+              <label>Full Name <span class="text-red">*</span></label>
+              <input type="text" name="fullName" required placeholder="e.g. Jane Wanjiru Kamau" />
+            </div>
+            <div class="form-field">
+              <label>Email <span class="text-red">*</span></label>
+              <input type="email" name="email" required placeholder="jane@example.com" />
+            </div>
+            <div class="form-field">
+              <label>Phone Number <span class="text-red">*</span></label>
+              <input type="tel" name="phone" required placeholder="+254 700 000 000" />
+            </div>
+            <div class="form-field">
+              <label>Passport Number <span class="text-red">*</span></label>
+              <input type="text" name="passport" required placeholder="A12345678" />
+            </div>
+            <div class="form-field">
+              <label>Nationality <span class="text-red">*</span></label>
+              <input type="text" name="nationality" required placeholder="Kenyan" />
+            </div>
+            <div class="form-field">
+              <label>Date of Birth <span class="text-red">*</span></label>
+              <input type="date" name="dob" required />
+            </div>
+            <div class="form-field full">
+              <label>Mailing Address <span class="text-red">*</span></label>
+              <input type="text" name="address" required placeholder="Street, city, postal code, country" />
+            </div>
+          </form>
+          <div class="step-nav">
+            <div></div>
+            <button class="btn btn-gold btn-lg" id="step1-next">Continue to Documents →</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: DOCUMENT UPLOAD -->
+        <div id="step-2" class="step-panel card card-white">
+          <h3 class="step-title">Step 2 · Document Upload</h3>
+          <p class="step-sub">Upload every required document. <span id="docs-progress" class="text-gold">0/0 uploaded.</span></p>
+          <div id="doc-errors" class="alert alert-red" style="display:none"></div>
+          <div id="docs-upload-list" class="docs-upload-list"></div>
+          <div class="step-nav">
+            <button class="btn btn-outline" data-prev-step="1">← Back</button>
+            <button class="btn btn-gold btn-lg" id="step2-next" disabled>Proceed to Review →</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: REVIEW & AUTH -->
+        <div id="step-3" class="step-panel card card-white">
+          <h3 class="step-title">Step 3 · Review & Authentication</h3>
+          <p class="step-sub">Confirm all information and documents are correct before proceeding to payment.</p>
+          <div id="review-summary"></div>
+          <div class="auth-badge">
+            <div class="auth-icon">🛂</div>
+            <div>
+              <h4>Authentication Check</h4>
+              <p>After payment, our consultants will verify each document with issuing authorities (embassies, ministries, institutions) to ensure authenticity. You will receive progress updates every 48 hours.</p>
+            </div>
+          </div>
+          <label class="checkbox-row">
+            <input type="checkbox" id="auth-confirm" />
+            <span>I confirm the information provided is accurate. I authorize Global Horizon to verify my documents with relevant authorities. <span class="text-red">*</span></span>
+          </label>
+          <div class="step-nav">
+            <button class="btn btn-outline" data-prev-step="2">← Back</button>
+            <button class="btn btn-gold btn-lg" id="step3-next" disabled>Continue to Payment →</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: PAYMENT -->
+        <div id="step-4" class="step-panel card card-white">
+          <h3 class="step-title">Step 4 · Secure Payment</h3>
+          <p class="step-sub">All transactions are SSL-encrypted. No card data is stored on our servers.</p>
+          <div class="pay-cols">
+            <div class="pay-form-col">
+              <div id="order-summary-sm" class="order-summary-sm"></div>
+              <form id="payment-form" class="payment-form">
+                <div class="form-field full">
+                  <label>Cardholder Name <span class="text-red">*</span></label>
+                  <input type="text" required placeholder="JANE W KAMAU" />
+                </div>
+                <div class="form-field full">
+                  <label>Card Number <span class="text-red">*</span></label>
+                  <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19" class="card-number" />
+                </div>
+                <div class="form-field">
+                  <label>Expiry <span class="text-red">*</span></label>
+                  <input type="text" required placeholder="MM / YY" maxlength="7" class="card-exp" />
+                </div>
+                <div class="form-field">
+                  <label>CVC <span class="text-red">*</span></label>
+                  <input type="text" required placeholder="•••" maxlength="4" class="card-cvc" />
+                </div>
+                <div class="pay-methods">
+                  <span class="method">💳 VISA</span>
+                  <span class="method">💳 Mastercard</span>
+                  <span class="method">🅰️ Amex</span>
+                  <span class="method">🏦 MPesa</span>
+                </div>
+              </form>
+            </div>
+            <aside class="pay-summary-col">
+              <div class="card card-gold pricing-card">
+                <h3>Order Summary</h3>
+                <div id="pay-summary-list" class="pay-summary-list"></div>
+                <hr/>
+                <div class="price-row price-total">
+                  <span>Total Due Today</span>
+                  <strong id="pay-total">$0</strong>
+                </div>
+                <button type="button" id="btn-pay" class="btn btn-red btn-lg btn-block">
+                  <span id="pay-btn-label">Pay $0</span>
+                </button>
+                <p class="secure-badge">🔒 256-bit SSL · PCI-DSS Compliant · 100% Refund if Visa Denied</p>
+              </div>
+            </aside>
+          </div>
+          <div class="step-nav single">
+            <button class="btn btn-outline" data-prev-step="3">← Back to Review</button>
+          </div>
+        </div>
+
+        <!-- PAYMENT PROCESSING OVERLAY -->
+        <div id="pay-processing" class="processing-overlay" style="display:none">
+          <div class="spinner"></div>
+          <h3>Processing Payment...</h3>
+          <p>Please wait while we securely process your transaction. Do not close this page.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= SUCCESS VIEW ============= -->
+    <section id="view-success" class="view">
+      <div class="container success-wrap">
+        <div class="success-card">
+          <div class="success-badge">✅</div>
+          <h2 class="text-gold-gradient">Booking Confirmed!</h2>
+          <p class="success-sub">Your application has been received and payment was successful. Here are your details:</p>
+
+          <div class="success-ref">
+            <label>Booking Reference</label>
+            <strong id="booking-ref" class="text-gold">TT-000000</strong>
+          </div>
+
+          <div id="success-summary" class="success-summary"></div>
+
+          <div class="next-steps">
+            <h4>What Happens Next?</h4>
+            <ol>
+              <li>📧 You'll receive a confirmation email with your booking reference and invoice within 15 minutes.</li>
+              <li>🛂 Our consultants begin document authentication and embassy filing within 24 business hours.</li>
+              <li>📞 Your dedicated case manager will contact you to schedule biometrics (if required).</li>
+              <li>📱 Track your application 24/7 — we'll notify you of every milestone via SMS + email.</li>
+            </ol>
+          </div>
+
+          <div class="success-ctas">
+            <button class="btn btn-gold btn-lg" data-nav="home">🏠 Back to Home</button>
+            <button class="btn btn-outline btn-lg" onclick="window.print()">🖨️ Print Receipt</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="data/requirements.js"></script>
+  <script src="data/packages.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

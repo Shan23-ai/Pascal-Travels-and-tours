@@ -1,0 +1,132 @@
+<!-- Payment Modal Component -->
+<div id="payment-modal" class="modal modal-hidden">
+  <div class="modal-overlay" id="modal-overlay"></div>
+  <div class="modal-content payment-modal">
+    <button class="modal-close" id="payment-modal-close">&times;</button>
+    
+    <div class="modal-header">
+      <h2>💳 Complete Your Payment</h2>
+      <p class="modal-subtitle">Secure M-Pesa payment via Buupass</p>
+    </div>
+
+    <div class="modal-body">
+      <!-- Payment Form -->
+      <form id="payment-form" class="payment-form">
+        <!-- Service Selection -->
+        <div class="form-group">
+          <label for="service-type">Service</label>
+          <select id="service-type" name="serviceType" required>
+            <option value="">Select a service...</option>
+            <option value="consultation">Free Consultation - KSh 0</option>
+            <option value="visa_application">Visa Application Service - KSh 5,000</option>
+            <option value="work_visa">Work Visa Processing - KSh 8,000</option>
+            <option value="study_visa">Study Visa Processing - KSh 6,000</option>
+            <option value="canada_pr">Canada PR Consultation - KSh 15,000</option>
+            <option value="tour_deposit">Tour Package Deposit - KSh 10,000</option>
+          </select>
+        </div>
+
+        <!-- Customer Name -->
+        <div class="form-group">
+          <label for="customer-name">Full Name</label>
+          <input 
+            type="text" 
+            id="customer-name" 
+            name="customerName" 
+            placeholder="Your full name"
+            required
+          />
+        </div>
+
+        <!-- Customer Email -->
+        <div class="form-group">
+          <label for="customer-email">Email Address</label>
+          <input 
+            type="email" 
+            id="customer-email" 
+            name="customerEmail" 
+            placeholder="your.email@example.com"
+            required
+          />
+        </div>
+
+        <!-- Phone Number -->
+        <div class="form-group">
+          <label for="phone-number">M-Pesa Phone Number</label>
+          <input 
+            type="tel" 
+            id="phone-number" 
+            name="phoneNumber" 
+            placeholder="254712345678 or 0712345678"
+            pattern="^(\+?254|0)[0-9]{9}$"
+            required
+          />
+          <small class="form-hint">Format: 254XXXXXXXXX or 0XXXXXXXXX (Kenyan number)</small>
+        </div>
+
+        <!-- Amount Display -->
+        <div class="form-group payment-summary">
+          <div class="summary-item">
+            <span>Service:</span>
+            <span id="summary-service">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Amount:</span>
+            <span id="summary-amount" class="amount-highlight">-</span>
+          </div>
+          <div class="summary-item">
+            <span>Status:</span>
+            <span id="payment-status" class="status-pending">Pending</span>
+          </div>
+        </div>
+
+        <!-- Payment Instructions -->
+        <div class="payment-instructions">
+          <h4>How it works:</h4>
+          <ol>
+            <li>Enter your details and M-Pesa phone number</li>
+            <li>Click "Send Payment Prompt"</li>
+            <li>You'll receive an M-Pesa prompt on your phone</li>
+            <li>Enter your M-Pesa PIN to complete payment</li>
+            <li>Receive confirmation instantly</li>
+          </ol>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-gold payment-submit" id="payment-submit-btn">
+          <span id="submit-text">💳 Send M-Pesa Prompt</span>
+          <span id="submit-loader" class="loader hidden"></span>
+        </button>
+      </form>
+
+      <!-- Success State -->
+      <div id="payment-success" class="payment-success hidden">
+        <div class="success-icon">✅</div>
+        <h3>Payment Initiated!</h3>
+        <p>You'll receive an M-Pesa prompt on your phone shortly.</p>
+        <div class="success-details">
+          <p><strong>Transaction ID:</strong> <span id="success-transaction-id">-</span></p>
+          <p><strong>Reference:</strong> <span id="success-reference">-</span></p>
+          <p><strong>Amount:</strong> <span id="success-amount">-</span></p>
+        </div>
+        <p class="success-note">Check your phone and complete the M-Pesa payment prompt.</p>
+        <button type="button" class="btn btn-primary" id="close-success-btn">Close</button>
+      </div>
+
+      <!-- Error State -->
+      <div id="payment-error" class="payment-error hidden">
+        <div class="error-icon">❌</div>
+        <h3>Payment Failed</h3>
+        <p id="error-message">An error occurred. Please try again.</p>
+        <button type="button" class="btn btn-outline" id="retry-payment-btn">Try Again</button>
+        <button type="button" class="btn btn-secondary" id="cancel-payment-btn">Cancel</button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <p class="security-badge">
+        🔒 Secure payment powered by Buupass • All transactions encrypted
+      </p>
+    </div>
+  </div>
+</div>

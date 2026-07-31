@@ -83,10 +83,10 @@
             <button class="btn btn-red btn-lg btn-shadow" data-nav="contact" data-scroll-nav="contact">
               🎯 Book Free Consultation
             </button>
-            <button class="btn btn-gold btn-lg btn-shadow" onclick="document.getElementById('start-application').scrollIntoView({behavior:'smooth',block:'start'})">
+            <button class="btn btn-gold btn-lg btn-shadow" data-nav="services">
               💼 Start Your Application
             </button>
-            <button class="btn btn-outline-white btn-lg" onclick="window.location.href='tel:+25453731136'">
+            <button class="btn btn-outline-white btn-lg" onclick="window.location.href='tel:+254753731136'">
               📞 Call Now
             </button>
           </div>
@@ -109,8 +109,8 @@
             <div class="trust-item"><span class="trust-num text-gold">12+</span><span>Years Experience</span></div>
           </div>
           <div class="hero-cta-bar">
-            <a class="hero-cta-chip" href="https://wa.me/25405205903?text=Hello%20Pascal%20Travels%2C%20I%20would%20like%20a%20free%20consultation" target="_blank" rel="noopener">💬 WhatsApp Us</a>
-            <a class="hero-cta-chip" href="tel:+25453731136">📞 Call +254 537 311 36</a>
+            <a class="hero-cta-chip" href="https://wa.me/254705205903?text=Hello%20Pascal%20Travels%2C%20I%20would%20like%20a%20free%20consultation" target="_blank" rel="noopener">💬 WhatsApp Us</a>
+            <a class="hero-cta-chip" href="tel:+254753731136">📞 Call +254 753 731 136</a>
             <a class="hero-cta-chip" href="mailto:Pascaltravelsdoc@gmail.com?subject=Free%20Consultation">✉️ Pascaltravelsdoc@gmail.com</a>
           </div>
           <div class="hero-scroll-hint">
@@ -119,49 +119,6 @@
           </div>
         </div>
       </header>
-
-      <section class="section section-light" id="start-application">
-        <div class="container">
-          <div class="conversion-strip">
-            <div class="conversion-card promo-card">
-              <span class="eyebrow text-gold">BUYER-FIRST OFFER</span>
-              <h2>Get a free consultation and a clear next-step plan in under 15 minutes.</h2>
-              <p>Whether you need a visa, overseas job, Canada PR pathway, study placement, or East Africa tour, our consultants make the process easy to understand and easier to start.</p>
-              <div class="conversion-highlights">
-                <div>✅ Fast document checklist and case review</div>
-                <div>✅ Honest pricing with no hidden surprises</div>
-                <div>✅ Guided support from first enquiry to arrival</div>
-              </div>
-            </div>
-            <div class="conversion-card form-card">
-              <h3>Request a Free Callback</h3>
-              <form id="lead-form" class="lead-form">
-                <input type="text" name="name" placeholder="Your name" required />
-                <input type="email" name="email" placeholder="Your email" required />
-                <input type="tel" name="phone" placeholder="Phone number" required />
-                <select name="service">
-                  <option value="">I need help with...</option>
-                  <option>Work visa</option>
-                  <option>Study visa</option>
-                  <option>Travel visa</option>
-                  <option>Canada PR</option>
-                  <option>Job abroad</option>
-                  <option>East Africa tour</option>
-                </select>
-                <button type="submit" class="btn btn-gold btn-block">Book My Consultation</button>
-                <p class="lead-form-note">We reply within 30 minutes during business hours.</p>
-              </form>
-              <div id="lead-form-success" class="lead-form-success" style="display:none;">Thanks! A consultant will contact you shortly.</div>
-            </div>
-          </div>
-          <div class="trust-row">
-            <div class="trust-pill">⚡ Fast Processing</div>
-            <div class="trust-pill">🛂 Expert Visa Guidance</div>
-            <div class="trust-pill">💼 Overseas Job Support</div>
-            <div class="trust-pill">🌍 East Africa Tour Planning</div>
-          </div>
-        </div>
-      </section>
 
       <!-- SERVICES -->
       <section id="services" class="section section-light">
@@ -315,6 +272,50 @@
               <h5>Documentation Support</h5>
               <p>Organizing & preparing essential documents for visas, employment contracts, and study program enrollments.</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BUYER-FIRST OFFER (moved below SIX SPECIALIZED LINES) -->
+      <section class="section section-light" id="start-application">
+        <div class="container">
+          <div class="conversion-strip">
+            <div class="conversion-card promo-card">
+              <span class="eyebrow text-gold">BUYER-FIRST OFFER</span>
+              <h2>Get a free consultation and a clear next-step plan in under 15 minutes.</h2>
+              <p>Whether you need a visa, overseas job, Canada PR pathway, study placement, or East Africa tour, our consultants make the process easy to understand and easier to start.</p>
+              <div class="conversion-highlights">
+                <div>✅ Fast document checklist and case review</div>
+                <div>✅ Honest pricing with no hidden surprises</div>
+                <div>✅ Guided support from first enquiry to arrival</div>
+              </div>
+            </div>
+            <div class="conversion-card form-card">
+              <h3>Request a Free Callback</h3>
+              <form id="lead-form" class="lead-form">
+                <input type="text" name="name" placeholder="Your name" required />
+                <input type="email" name="email" placeholder="Your email" required />
+                <input type="tel" name="phone" placeholder="Phone number" required />
+                <select name="service">
+                  <option value="">I need help with...</option>
+                  <option>Work visa</option>
+                  <option>Study visa</option>
+                  <option>Travel visa</option>
+                  <option>Canada PR</option>
+                  <option>Job abroad</option>
+                  <option>East Africa tour</option>
+                </select>
+                <button type="submit" class="btn btn-gold btn-block">Book My Consultation</button>
+                <p class="lead-form-note">We reply within 30 minutes during business hours.</p>
+              </form>
+              <div id="lead-form-success" class="lead-form-success" style="display:none;">Thanks! A consultant will contact you shortly.</div>
+            </div>
+          </div>
+          <div class="trust-row">
+            <div class="trust-pill">⚡ Fast Processing</div>
+            <div class="trust-pill">🛂 Expert Visa Guidance</div>
+            <div class="trust-pill">💼 Overseas Job Support</div>
+            <div class="trust-pill">🌍 East Africa Tour Planning</div>
           </div>
         </div>
       </section>
@@ -497,8 +498,8 @@
             <div class="footer-col contact-col">
               <h4>Contact Us</h4>
               <ul class="contact-list">
-                <li>📞 +254 537 311 36</li>
-                <li>💬 +254 052 059 03 (WhatsApp)</li>
+                <li>📞 +254 753 731 136</li>
+                <li>💬 +254 705 205 903 (WhatsApp)</li>
                 <li>📧 Pascaltravelsdoc@gmail.com</li>
                 <li>🌐 www.pascaltravels.co.ke</li>
                 <li>📍 Magomano B.S Complex, Along Tom Mboya Street,<br/>Opp. KTDA Plaza, Nairobi, Kenya.</li>
@@ -521,12 +522,12 @@
     </section>
 
     <div class="sticky-cta" aria-label="Quick contact actions">
-      <a class="btn btn-gold" href="tel:+25453731136">📞 Call Now</a>
+      <a class="btn btn-gold" href="tel:+254753731136">📞 Call Now</a>
       <a class="btn btn-blue" href="mailto:Pascaltravelsdoc@gmail.com?subject=Free%20Consultation">✉️ Email Us</a>
     </div>
 
     <!-- FLOATING WHATSAPP BUTTON -->
-    <a href="https://wa.me/25405205903?text=Hello%20Pascal%20Travels%2C%20I%20would%20like%20a%20free%20consultation" target="_blank" rel="noopener" class="float-whatsapp" title="Chat with us on WhatsApp">
+    <a href="https://wa.me/254705205903?text=Hello%20Pascal%20Travels%2C%20I%20would%20like%20a%20free%20consultation" target="_blank" rel="noopener" class="float-whatsapp" title="Chat with us on WhatsApp">
       <span>💬</span>
     </a>
 
@@ -536,6 +537,9 @@
     <!-- ============= PACKAGE DETAIL VIEW ============= -->
     <section id="view-package" class="view">
       <div class="container package-detail">
+        <div class="dashboard-logo">
+          <img src="assets/logo-main.jpeg" alt="Pascal Travels & Tours logo" />
+        </div>
         <button class="btn-back" data-go-back="home">← Back</button>
 
         <div id="package-hero" class="package-hero"></div>
@@ -587,6 +591,9 @@
     <!-- ============= DOC SUBMISSION STEPPER VIEW ============= -->
     <section id="view-submit" class="view">
       <div class="container submit-view">
+        <div class="dashboard-logo">
+          <img src="assets/logo-main.jpeg" alt="Pascal Travels & Tours logo" />
+        </div>
         <button class="btn-back" data-go-back="package">← Back to package</button>
 
         <div class="stepper-wrap card card-white">

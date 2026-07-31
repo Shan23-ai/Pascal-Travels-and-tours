@@ -682,12 +682,70 @@
     }
   }
 
+  function initFAQ() {
+    document.querySelectorAll('.faq-question').forEach(q => {
+      q.addEventListener('click', () => {
+        const item = q.closest('.faq-item');
+        const wasActive = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+        if (!wasActive) item.classList.add('active');
+      });
+    });
+  }
+
+  function initBackToTop() {
+    const btn = $('#back-to-top');
+    if (!btn) return;
+    window.addEventListener('scroll', () => {
+      btn.classList.toggle('visible', window.scrollY > 400);
+    });
+    btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  function initNewsletter() {
+    const form = $('#newsletter-form');
+    if (!form) return;
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const success = $('#newsletter-success');
+      const btn = form.querySelector('button');
+      const original = btn.textContent;
+      btn.textContent = '✓ Subscribed!';
+      btn.disabled = true;
+      success.style.display = 'block';
+      form.reset();
+      setTimeout(() => { btn.textContent = original; btn.disabled = false; success.style.display = 'none'; }, 4000);
+    });
+  }
+
+  function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+
+    document.querySelectorAll('.testimonial-card, .faq-item, .newsletter-card, .svc-m-card, .wc-card, .t-card, .mv-card, .visa-card, .tour-card, .pr-banner').forEach(el => {
+      el.classList.add('reveal');
+      observer.observe(el);
+    });
+  }
+
   function init() {
     renderServices();
     renderVisaPackages('travel');
     renderTours();
     renderCanadaVisual();
     attachGlobalHandlers();
+    initFAQ();
+    initBackToTop();
+    initNewsletter();
+    initScrollReveal();
   }
 
   document.addEventListener('DOMContentLoaded', init);

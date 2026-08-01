@@ -159,6 +159,42 @@
     img.onerror = () => { img.style.background = 'linear-gradient(135deg,#FF0000 0 33%,#FFFFFF 33% 66%,#FF0000 66% 100%)'; img.removeAttribute('src'); };
   }
 
+  function renderCompactBrandLogo() {
+    const host = document.querySelector('.hero-mini-logo');
+    const brand = document.querySelector('.hero-brand-mini');
+    if (!host) return;
+
+    host.innerHTML = `
+      <div style="
+        width: 54px;
+        height: 54px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.18), rgba(255, 88, 88, 0.16));
+        border: 1px solid rgba(255, 215, 0, 0.45);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+        padding: 6px;
+      ">
+        <svg viewBox="0 0 64 64" width="100%" height="100%" aria-label="Pascal Travels logo">
+          <rect x="7" y="7" width="50" height="50" rx="16" fill="rgba(255,255,255,0.08)" stroke="#FFD54A" stroke-width="3"></rect>
+          <path d="M20 20L44 20L32 44L20 20Z" fill="#E74C3C"></path>
+          <path d="M24 23H40" stroke="#FFF" stroke-width="2.4" stroke-linecap="round"></path>
+          <path d="M27 30H37" stroke="#FFF" stroke-width="2.4" stroke-linecap="round"></path>
+          <circle cx="32" cy="36" r="5" fill="#FFD54A"></circle>
+        </svg>
+      </div>
+    `;
+
+    if (brand) {
+      brand.textContent = 'PASCAL TRAVELS';
+      brand.style.fontSize = '0.95rem';
+      brand.style.letterSpacing = '0.16em';
+      brand.style.opacity = '0.95';
+    }
+  }
+
   function selectPackage(id) {
     const p = findPackage(id);
     if (!p) return;
@@ -741,6 +777,7 @@
     renderVisaPackages('travel');
     renderTours();
     renderCanadaVisual();
+    renderCompactBrandLogo();
     attachGlobalHandlers();
     initFAQ();
     initBackToTop();

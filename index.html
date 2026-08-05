@@ -678,35 +678,220 @@
         <!-- STEP 4: PAYMENT -->
         <div id="step-4" class="step-panel card card-white">
           <h3 class="step-title">Step 4 · Secure Payment</h3>
-          <p class="step-sub">All transactions are SSL-encrypted. No card data is stored on our servers.</p>
+          <p class="step-sub">All transactions are SSL-encrypted. Choose your preferred payment method below.</p>
+
+          <!-- PAYMENT METHOD SELECTOR -->
+          <div id="pay-method-selector" class="pay-method-selector">
+            <h4 style="margin:0 0 .4rem;color:var(--skyblue-navy);">Select Payment Method</h4>
+            <div class="pay-method-grid">
+              <label class="pay-method-opt" data-method="card">
+                <input type="radio" name="payMethod" value="card" checked />
+                <span class="pm-icon">💳</span>
+                <span class="pm-title">Card / Stripe</span>
+                <span class="pm-desc">Visa · Mastercard · Amex</span>
+              </label>
+              <label class="pay-method-opt" data-method="pesalink">
+                <input type="radio" name="payMethod" value="pesalink" />
+                <span class="pm-icon">🏦</span>
+                <span class="pm-title">DIB Bank / PesaLink</span>
+                <span class="pm-desc">Real-time up to KSh 300,000</span>
+              </label>
+              <label class="pay-method-opt" data-method="wu">
+                <input type="radio" name="payMethod" value="wu" />
+                <span class="pm-icon">🌍</span>
+                <span class="pm-title">Western Union</span>
+                <span class="pm-desc">130+ currencies · MTCN</span>
+              </label>
+            </div>
+          </div>
+
           <div class="pay-cols">
             <div class="pay-form-col">
               <div id="order-summary-sm" class="order-summary-sm"></div>
-              <form id="payment-form" class="payment-form">
-                <div class="form-field full">
-                  <label>Cardholder Name <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="JANE W KAMAU" />
+
+              <!-- METHOD PANEL: CARD / STRIPE -->
+              <div id="panel-card" class="pay-panel pay-panel-active">
+                <form id="payment-form" class="payment-form">
+                  <div class="form-field full">
+                    <label>Cardholder Name <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="JANE W KAMAU" />
+                  </div>
+                  <div class="form-field full">
+                    <label>Card Number <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19" class="card-number" />
+                  </div>
+                  <div class="form-field">
+                    <label>Expiry <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="MM / YY" maxlength="7" class="card-exp" />
+                  </div>
+                  <div class="form-field">
+                    <label>CVC <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="•••" maxlength="4" class="card-cvc" />
+                  </div>
+                  <div class="pay-methods">
+                    <span class="method">💳 VISA</span>
+                    <span class="method">💳 Mastercard</span>
+                    <span class="method">🅰️ Amex</span>
+                    <span class="method">🏦 MPesa</span>
+                  </div>
+                </form>
+              </div>
+
+              <!-- METHOD PANEL: DIB BANK / PESALINK -->
+              <div id="panel-pesalink" class="pay-panel">
+                <div id="pesalink-demo-banner" class="pay-note-banner" style="display:none;">
+                  ⚠ <strong>Demo mode:</strong> Select a PesaLink option to simulate the flow.
                 </div>
-                <div class="form-field full">
-                  <label>Card Number <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19" class="card-number" />
+
+                <!-- Sub-mode choice: direct (manual) vs aggregator -->
+                <div id="pesalink-submode" class="pesalink-submode">
+                  <h4 style="margin:0 0 .5rem;color:var(--skyblue-navy);">How would you like to pay?</h4>
+                  <div class="submode-options">
+                    <button type="button" class="btn btn-outline btn-sm submode-btn is-active" data-pesalink-mode="manual">
+                      🏦 PesaLink via My Bank App
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm submode-btn" data-pesalink-mode="aggregator">
+                      🔗 PaySecurely (Aggregator)
+                    </button>
+                  </div>
                 </div>
-                <div class="form-field">
-                  <label>Expiry <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="MM / YY" maxlength="7" class="card-exp" />
+
+                <!-- MANUAL: DIB bank details + notify form -->
+                <div id="pesalink-manual" class="pesalink-mode-panel">
+                  <div class="dib-bank-card" id="dib-bank-details">
+                    <h4>🏦 Pay via PesaLink to our DIB Bank Account</h4>
+                    <div class="dib-detail-grid">
+                      <div><span>Bank</span><strong id="dib-bank-name">Dubai Islamic Bank (Kenya)</strong></div>
+                      <div><span>Account Name</span><strong id="dib-account-name">Pascal Travels & Tour Ltd</strong></div>
+                      <div><span>Account No.</span><strong id="dib-account-no">0101234567890</strong></div>
+                      <div><span>Branch</span><strong id="dib-branch">Tom Mboya Street, Nairobi</strong></div>
+                      <div><span>Swift</span><strong id="dib-swift">DIBKKENA</strong></div>
+                      <div><span>Amount Due</span><strong id="dib-amount" class="text-gold">—</strong></div>
+                    </div>
+                    <ol class="dib-steps">
+                      <li>Open your bank's mobile app / USSD (KCB, Equity, Co-op, StanChart, etc.)</li>
+                      <li>Choose <strong>PesaLink</strong> (real-time, works 24/7)</li>
+                      <li>Enter the DIB account details above and the exact amount</li>
+                      <li>Keep the <strong>transaction reference</strong> shown after sending</li>
+                    </ol>
+                  </div>
+
+                  <form id="pesalink-notify-form" class="notify-form" style="display:none;">
+                    <h4>✅ I've Sent the Money — Confirm My Booking</h4>
+                    <div class="form-grid-2">
+                      <div class="form-field">
+                        <label>Sender Full Name <span class="text-red">*</span></label>
+                        <input type="text" name="senderName" required placeholder="e.g. Jane Wanjiru Kamau" />
+                      </div>
+                      <div class="form-field">
+                        <label>Bank Used for PesaLink <span class="text-red">*</span></label>
+                        <select name="senderBank" required>
+                          <option value="">Select bank...</option>
+                          <option>KCB</option>
+                          <option>Equity</option>
+                          <option>Co-operative Bank</option>
+                          <option>Stanbic</option>
+                          <option>Standard Chartered</option>
+                          <option>Absa</option>
+                          <option>NCBA</option>
+                          <option>DIB Kenya</option>
+                          <option>Other</option>
+                        </select>
+                      </div>
+                      <div class="form-field">
+                        <label>PesaLink Transaction Reference <span class="text-red">*</span></label>
+                        <input type="text" name="transactionRef" required placeholder="e.g. PLK-1234567890" />
+                      </div>
+                      <div class="form-field">
+                        <label>Amount Sent (KES) <span class="text-red">*</span></label>
+                        <input type="number" name="sentAmount" required placeholder="150000" min="1" />
+                      </div>
+                    </div>
+                    <p class="notify-note">🔒 Our team verifies the credit on our DIB account and confirms your booking within <strong>2 business hours</strong>. You will receive SMS + email confirmation.</p>
+                    <button type="submit" class="btn btn-gold btn-block">Submit Transfer Details</button>
+                  </form>
+
+                  <div id="pesalink-notify-success" class="success-inline" style="display:none;">
+                    🎉 <strong>Thank you!</strong> Your transfer details have been received. We'll verify the credit on our DIB bank account and confirm your booking within 2 business hours.
+                  </div>
+
+                  <button type="button" id="btn-pesalink-notify-toggle" class="btn btn-skyblue btn-block">📤 I've Sent the Money — Notify Us</button>
                 </div>
-                <div class="form-field">
-                  <label>CVC <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="•••" maxlength="4" class="card-cvc" />
+
+                <!-- AGGREGATOR: redirect -->
+                <div id="pesalink-aggregator" class="pesalink-mode-panel" style="display:none;">
+                  <div class="aggregator-card">
+                    <div class="aggr-icon">🔗</div>
+                    <h4>PaySecurely (PesaLink via Aggregator)</h4>
+                    <p>You'll be securely redirected to complete your PesaLink payment in your bank's app or the aggregator's hosted page. Your payment is confirmed instantly by webhook.</p>
+                    <button type="button" id="btn-pesalink-redirect" class="btn btn-gold btn-block">🔗 Redirect to PaySecurely</button>
+                    <a href="#" id="pesalink-payment-link" target="_blank" rel="noopener" style="display:none;"></a>
+                  </div>
                 </div>
-                <div class="pay-methods">
-                  <span class="method">💳 VISA</span>
-                  <span class="method">💳 Mastercard</span>
-                  <span class="method">🅰️ Amex</span>
-                  <span class="method">🏦 MPesa</span>
+              </div>
+
+              <!-- METHOD PANEL: WESTERN UNION -->
+              <div id="panel-wu" class="pay-panel">
+                <div id="wu-demo-banner" class="pay-note-banner" style="display:none;">
+                  ⚠ <strong>Demo mode:</strong> In mock mode, enter any 10–16 digit MTCN to simulate verification.
                 </div>
-              </form>
+                <div id="wu-instructions" class="wu-instructions">
+                  <h4>🌍 Pay via Western Union</h4>
+                  <ol class="wu-steps">
+                    <li>Send your payment to our Western Union receiver (130+ currencies accepted).</li>
+                    <li>Visit a <strong>Western Union agent</strong>, the WU website, or the WU mobile app.</li>
+                    <li>Send to: <strong>Pascal Travels & Tour Ltd</strong> — Receiver Country: <strong>Kenya</strong>, City: <strong>Nairobi</strong>.</li>
+                    <li>You'll receive a <strong>Money Transfer Control Number (MTCN)</strong>.</li>
+                    <li>Enter the MTCN below — we verify it and confirm your booking.</li>
+                  </ol>
+                  <div class="wu-receiver-card">
+                    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;">
+                      <div><span>Amount Due (KES)</span><strong id="wu-amount" class="text-gold">—</strong></div>
+                      <div><span>Receiver</span><strong id="wu-receiver">Pascal Travels & Tour Ltd</strong></div>
+                      <div><span>Country / City</span><strong>Kenya · Nairobi</strong></div>
+                    </div>
+                  </div>
+                </div>
+                <form id="wu-verify-form" class="notify-form">
+                  <h4>🔍 Verify My Payment (Enter MTCN)</h4>
+                  <div class="form-grid-2">
+                    <div class="form-field full">
+                      <label>MTCN (Money Transfer Control Number) <span class="text-red">*</span></label>
+                      <input type="text" name="mtcn" required placeholder="10–16 digit number, e.g. 1284947565123" minlength="10" maxlength="16" pattern="[0-9]{10,16}" title="MTCN is a 10–16 digit number" />
+                    </div>
+                    <div class="form-field">
+                      <label>Sender Full Name <span class="text-red">*</span></label>
+                      <input type="text" name="senderName" required placeholder="e.g. Jane Wanjiru Kamau" />
+                    </div>
+                    <div class="form-field">
+                      <label>Sender Country</label>
+                      <input type="text" name="senderCountry" placeholder="e.g. KE / Kenya" />
+                    </div>
+                    <div class="form-field">
+                      <label>Amount Sent</label>
+                      <input type="number" name="sendAmount" placeholder="e.g. 1500" min="1" />
+                    </div>
+                    <div class="form-field">
+                      <label>Send Currency</label>
+                      <select name="sendCurrency">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="KES">KES</option>
+                        <option value="AED">AED</option>
+                        <option value="CAD">CAD</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-gold btn-block">🔍 Verify Payment & Confirm Booking</button>
+                </form>
+                <div id="wu-verify-success" class="success-inline" style="display:none;">
+                  🎉 <strong>Payment verified!</strong> Your Western Union payment has been confirmed and your booking is now active.
+                </div>
+                <div id="wu-verify-error" class="alert alert-red" style="display:none;"></div>
+              </div>
             </div>
+
             <aside class="pay-summary-col">
               <div class="card card-gold pricing-card">
                 <h3>Order Summary</h3>

@@ -403,12 +403,12 @@ button { font-family: inherit; cursor: pointer; border: none; }
 .hero-particles span:nth-child(5) { top: 40%; right: 22%; animation-delay: 1.8s; font-size: 1.6rem; }
 .hero-particles span:nth-child(6) { top: 80%; left: 28%; animation-delay: 4.8s; font-size: 1.7rem; }
 
-
-
+.hero-cta-chip {
   display: inline-flex; align-items: center; gap: 0.4rem;
   padding: 0.6rem 0.95rem; border-radius: 999px; background: rgba(255,255,255,0.12);
   border: 1px solid rgba(255,215,0,0.35); color: var(--white);
   font-size: 0.86rem; font-weight: 700; backdrop-filter: blur(8px);
+}
 
 .hero-scroll-hint {
   margin-top: 2.8rem;
@@ -1350,3 +1350,135 @@ button { font-family: inherit; cursor: pointer; border: none; }
   .newsletter-form { flex-direction: column; }
   .newsletter-form .btn { width: 100%; }
 }
+
+/* ==============================================
+ * PAYMENT METHOD SELECTOR (Step 4)
+ * ============================================== */
+.pay-method-selector { margin-bottom: 1.4rem; }
+.pay-method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.8rem;
+  margin-top: 0.6rem;
+}
+@media (max-width: 640px) {
+  .pay-method-grid { grid-template-columns: 1fr; }
+}
+.pay-method-opt {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  padding: 1.1rem 0.8rem;
+  border: 2px solid var(--skyblue-soft);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  cursor: pointer;
+  text-align: center;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.pay-method-opt:hover { border-color: var(--golden); transform: translateY(-2px); box-shadow: var(--shadow-soft); }
+.pay-method-opt input { position: absolute; opacity: 0; pointer-events: none; }
+.pay-method-opt:has(input:checked) {
+  border-color: var(--golden-deep);
+  background: linear-gradient(180deg, #FFFDF2, #FFF9D8);
+  box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.25), var(--shadow-gold);
+}
+.pm-icon { font-size: 1.8rem; }
+.pm-title { font-weight: 800; color: var(--skyblue-navy); font-size: 0.95rem; }
+.pm-desc { font-size: 0.78rem; color: var(--text-muted); }
+
+/* Payment panels */
+.pay-panel { display: none; }
+.pay-panel.pay-panel-active { display: block; }
+
+/* ==============================================
+ * PESALINK (DIB) PANEL
+ * ============================================== */
+.pay-note-banner {
+  padding: 0.7rem 1rem;
+  background: #FFF8E1;
+  border: 1px solid var(--golden);
+  border-radius: var(--radius-md);
+  color: #5A3E00;
+  font-size: 0.86rem;
+  margin-bottom: 1rem;
+}
+.pesalink-submode { margin-bottom: 1rem; }
+.submode-options { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.5rem; }
+.submode-btn { white-space: normal; text-align: center; }
+.submode-btn.is-active {
+  background: linear-gradient(135deg, var(--golden), var(--golden-soft));
+  color: var(--skyblue-navy);
+  border-color: var(--golden-deep);
+  box-shadow: var(--shadow-gold);
+}
+.dib-bank-card {
+  background: linear-gradient(135deg, #F0F7FF, #E0F4FF);
+  border: 2px solid var(--skyblue-deep);
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+}
+.dib-bank-card h4 { color: var(--skyblue-navy); margin-bottom: 0.8rem; }
+.dib-detail-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.7rem; margin-bottom: 0.8rem;
+}
+.dib-detail-grid div {
+  background: var(--white);
+  border-radius: 10px;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--skyblue-soft);
+}
+.dib-detail-grid span {
+  display: block; font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700;
+}
+.dib-detail-grid strong { font-size: 0.9rem; color: var(--skyblue-navy); }
+.dib-steps, .wu-steps { padding-left: 1.2rem; margin: 0; display: grid; gap: 0.4rem; }
+.dib-steps li, .wu-steps li { color: var(--text-muted); font-size: 0.9rem; line-height: 1.55; }
+.notify-form {
+  background: var(--skyblue-pale);
+  border-radius: var(--radius-md);
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--skyblue-soft);
+}
+.notify-form h4 { color: var(--skyblue-navy); margin-bottom: 0.8rem; }
+.notify-note { font-size: 0.82rem; color: var(--text-muted); margin: 0.6rem 0; }
+.success-inline {
+  background: #F0FFF4;
+  border: 1px solid #48BB78;
+  color: #2F855A;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.aggregator-card {
+  background: linear-gradient(135deg, #FFF9D8, #FFEF99);
+  border: 2px solid var(--golden);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  text-align: center;
+}
+.aggr-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+.aggregator-card h4 { color: var(--skyblue-navy); }
+.aggregator-card p { color: var(--text-muted); font-size: 0.9rem; }
+
+/* ==============================================
+ * WESTERN UNION PANEL
+ * ============================================== */
+.wu-instructions { margin-bottom: 1rem; }
+.wu-instructions h4 { color: var(--skyblue-navy); }
+.wu-receiver-card {
+  background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+  margin-top: 0.9rem;
+  border: 1px solid var(--skyblue-deep);
+}
+.wu-receiver-card span {
+  display: block; font-size: 0.72rem; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--text-muted); font-weight: 700;
+}
+.wu-receiver-card strong { font-size: 0.92rem; color: var(--skyblue-navy); }

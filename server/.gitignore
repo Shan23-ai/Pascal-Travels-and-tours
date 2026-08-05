@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Western Union client certificates (NEVER commit these)
+certs/
+*.p12
+*.pfx
+*.pem
+*.key
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+
+# Coverage / build
+coverage/
+dist/
+

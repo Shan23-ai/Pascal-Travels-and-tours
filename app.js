@@ -177,13 +177,7 @@
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
         padding: 6px;
       ">
-        <svg viewBox="0 0 64 64" width="100%" height="100%" aria-label="Pascal Travels logo">
-          <rect x="7" y="7" width="50" height="50" rx="16" fill="rgba(255,255,255,0.08)" stroke="#FFD54A" stroke-width="3"></rect>
-          <path d="M20 20L44 20L32 44L20 20Z" fill="#E74C3C"></path>
-          <path d="M24 23H40" stroke="#FFF" stroke-width="2.4" stroke-linecap="round"></path>
-          <path d="M27 30H37" stroke="#FFF" stroke-width="2.4" stroke-linecap="round"></path>
-          <circle cx="32" cy="36" r="5" fill="#FFD54A"></circle>
-        </svg>
+        <img src="assets/logo-main.jpeg" alt="Pascal Travels & Tours logo" style="width:100%;height:100%;object-fit:contain;border-radius:10px;" />
       </div>
     `;
 
@@ -510,6 +504,8 @@
     const ticket = p.pricePerPerson ? 0 : appState.totalTicket;
     const total = processing + ticket;
     const currency = getPackageMeta(p).currency;
+    const totalKes = convertToKes(total, currency);
+
     $('#order-summary-sm').innerHTML = `
       <strong>🛫 ${getPackageMeta(p).title}</strong> — ${getPackageMeta(p).est}<br/>
       <span style="font-size:.82rem;color:var(--text-muted);">Booking for: ${appState.personalInfo.fullName || 'Applicant'}</span>
@@ -521,6 +517,20 @@
     $('#pay-summary-list').innerHTML = rows.map(([k, v]) => `<div><span>${k}</span><strong>${money(v, currency)}</strong></div>`).join('');
     $('#pay-total').textContent = money(total, currency);
     $('#pay-btn-label').textContent = `Pay ${money(total, currency)}`;
+
+    // Populate DIB amount (KES) and WU amount (KES)
+    const dibAmount = $('#dib-amount');
+    if (dibAmount) dibAmount.textContent = `KSh ${totalKes.toLocaleString('en-KE')}`;
+    const wuAmount = $('#wu-amount');
+    if (wuAmount) wuAmount.textContent = `KSh ${totalKes.toLocaleString('en-KE')}`;
+    appState.paymentTotalKes = totalKes;
+  }
+
+  // Simple USD/EUR → KES conversion fallback (demo). Replace with real FX API in production.
+  function convertToKes(amount, currency) {
+    const RATES = { USD: 129, EUR: 140, GBP: 163, KES: 1, AED: 35, CAD: 95 };
+    const rate = RATES[currency] || 129;
+    return Math.round(amount * rate);
   }
 
   function submitPayment() {
@@ -536,6 +546,7 @@
     setTimeout(() => {
       const ref = 'TT-' + Math.floor(100000 + Math.random() * 900000);
       const meta = getPackageMeta(p);
+      const pending = appState.pendingConfirmation;
       $('#booking-ref').textContent = ref;
       $('#success-summary').innerHTML = `
         <div><span>Package</span><strong>${meta.flag} ${meta.title}</strong></div>
@@ -544,7 +555,9 @@
         <div><span>Visa Processing</span><strong>${money(processing, currency)}</strong></div>
         ${ticket > 0 ? `<div><span>Flight Ticket</span><strong>${money(ticket, currency)}</strong></div>` : ''}
         <div><span>Total Paid</span><strong>${money(total, currency)}</strong></div>
+        ${pending ? `<div class="success-note" style="border-top:1px dashed var(--skyblue-soft);padding-top:.6rem;margin-top:.6rem;color:${pending.method === 'pesalink' ? '#0C5A8F' : '#2F855A'};font-weight:700;">${pending.message}</div>` : ''}
       `;
+      appState.pendingConfirmation = null;
       if (overlay) overlay.style.display = 'none';
       setView('success');
     }, 1700);
@@ -565,6 +578,185 @@
     if (!el) return;
     const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
     window.scrollTo({ top: y, behavior: 'smooth' });
+  }
+
+  /* ==============================================
+   * PAYMENT METHOD SWITCHING (Step 4)
+   * ============================================== */
+  function initPaymentMethodSelector() {
+    const radios = $$('.pay-method-opt input[name="payMethod"]');
+    radios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        const method = radio.value;
+        $$('.pay-panel').forEach(p => p.classList.remove('pay-panel-active'));
+        const panel = document.getElementById(`panel-${method}`);
+        if (panel) panel.classList.add('pay-panel-active');
+        updatePayButton(method);
+      });
+    });
+
+    // PesaLink sub-mode buttons (manual vs aggregator)
+    $$('.submode-btn[data-pesalink-mode]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('.submode-btn').forEach(b => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const mode = btn.getAttribute('data-pesalink-mode');
+        const manual = $('#pesalink-manual');
+        const aggregator = $('#pesalink-aggregator');
+        if (manual) manual.style.display = mode === 'manual' ? 'block' : 'none';
+        if (aggregator) aggregator.style.display = mode === 'aggregator' ? 'block' : 'none';
+      });
+    });
+
+    // "I've sent the money" toggle — show the notify form
+    const notifyToggle = $('#btn-pesalink-notify-toggle');
+    if (notifyToggle) {
+      notifyToggle.addEventListener('click', () => {
+        const form = $('#pesalink-notify-form');
+        if (form) {
+          form.style.display = form.style.display === 'none' ? 'block' : 'none';
+          notifyToggle.style.display = form.style.display === 'block' ? 'none' : 'block';
+        }
+      });
+    }
+
+    // PesaLink notify form submit
+    const pesalinkForm = $('#pesalink-notify-form');
+    if (pesalinkForm) {
+      pesalinkForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const fd = new FormData(pesalinkForm);
+        const data = {
+          senderName: fd.get('senderName'),
+          senderBank: fd.get('senderBank'),
+          transactionRef: fd.get('transactionRef'),
+          sentAmount: fd.get('sentAmount')
+        };
+        submitPesalinkNotify(data);
+      });
+    }
+
+    // PesaLink aggregator redirect
+    const pesalinkRedirect = $('#btn-pesalink-redirect');
+    if (pesalinkRedirect) {
+      pesalinkRedirect.addEventListener('click', () => {
+        pesalinkRedirect.textContent = '⏳ Redirecting to PaySecurely...';
+        pesalinkRedirect.disabled = true;
+        // Simulate provider redirect (in production, call initiatePesalink and get paymentUrl)
+        setTimeout(() => {
+          const link = $('#pesalink-payment-link');
+          if (link) {
+            link.href = '#';
+            link.textContent = '← If not redirected, click here to complete payment';
+            link.style.display = 'block';
+          }
+          pesalinkRedirect.textContent = '🔗 I\u2019ve Completed the Payment';
+          pesalinkRedirect.disabled = false;
+          pesalinkRedirect.classList.add('btn-success');
+        }, 1200);
+      });
+    }
+
+    // Western Union MTCN verify form
+    const wuForm = $('#wu-verify-form');
+    if (wuForm) {
+      wuForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const fd = new FormData(wuForm);
+        const data = {
+          mtcn: fd.get('mtcn'),
+          senderName: fd.get('senderName'),
+          senderCountry: fd.get('senderCountry'),
+          sendAmount: fd.get('sendAmount'),
+          sendCurrency: fd.get('sendCurrency')
+        };
+        submitWuVerify(data);
+      });
+    }
+  }
+
+  function updatePayButton(method) {
+    const btn = $('#btn-pay');
+    const label = $('#pay-btn-label');
+    if (!btn || !label) return;
+    const total = appState.paymentTotalKes || 0;
+    if (method === 'pesalink') {
+      label.textContent = `Pay KSh ${total.toLocaleString('en-KE')} via PesaLink`;
+    } else if (method === 'wu') {
+      label.textContent = `Pay KSh ${total.toLocaleString('en-KE')} via Western Union`;
+    } else {
+      // card — restore original
+      const p = appState.selectedPackage;
+      const processing = appState.totalProcessing;
+      const ticket = p.pricePerPerson ? 0 : appState.totalTicket;
+      const currency = getPackageMeta(p).currency;
+      label.textContent = `Pay ${money(processing + ticket, currency)}`;
+    }
+  }
+
+  /* ==============================================
+   * PESALINK (DIB) — manual transfer notification
+   * ============================================== */
+  function submitPesalinkNotify(data) {
+    // In production, POST to /api/payments/pesalink/notify
+    // Demo: simulate submission
+    const btn = $('#pesalink-notify-form button[type="submit"]');
+    const original = btn.textContent;
+    btn.textContent = '⏳ Submitting...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const form = $('#pesalink-notify-form');
+      const success = $('#pesalink-notify-success');
+      if (form) form.style.display = 'none';
+      if (success) success.style.display = 'block';
+      btn.textContent = original;
+      btn.disabled = false;
+      // Update the pay button to reflect pending confirmation
+      updatePayButton('pesalink');
+      // Show a confirmation message on the success view
+      appState.pendingConfirmation = {
+        method: 'pesalink',
+        message: 'Your PesaLink transfer details have been received. We will verify the credit on our DIB account and confirm your booking within 2 business hours.'
+      };
+    }, 900);
+  }
+
+  /* ==============================================
+   * WESTERN UNION — MTCN verification
+   * ============================================== */
+  function submitWuVerify(data) {
+    const btn = $('#wu-verify-form button[type="submit"]');
+    const error = $('#wu-verify-error');
+    if (error) error.style.display = 'none';
+    const original = btn.textContent;
+    btn.textContent = '⏳ Verifying...';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      const mtcn = String(data.mtcn || '').trim();
+      const valid = /^[0-9]{10,16}$/.test(mtcn);
+      if (!valid) {
+        if (error) {
+          error.textContent = 'Invalid MTCN. Please enter the 10–16 digit Money Transfer Control Number from your Western Union receipt.';
+          error.style.display = 'block';
+        }
+        btn.textContent = original;
+        btn.disabled = false;
+        return;
+      }
+      const success = $('#wu-verify-success');
+      const form = $('#wu-verify-form');
+      if (form) form.style.display = 'none';
+      if (success) success.style.display = 'block';
+      btn.textContent = original;
+      btn.disabled = false;
+      appState.pendingConfirmation = {
+        method: 'western_union',
+        message: `Your Western Union payment (MTCN ${mtcn}) has been verified. Your booking is confirmed.`
+      };
+      updatePayButton('wu');
+    }, 900);
   }
 
   function attachGlobalHandlers() {
@@ -682,6 +874,39 @@
     }
 
     $('#btn-pay').addEventListener('click', () => {
+      // Determine currently-selected payment method
+      const checked = document.querySelector('.pay-method-opt input[name="payMethod"]:checked');
+      const method = checked ? checked.value : 'card';
+
+      if (method !== 'card') {
+        // PesaLink manual → user must have submitted the notify form
+        if (method === 'pesalink') {
+          const notifySubmitted = $('#pesalink-notify-success') && $('#pesalink-notify-success').style.display === 'block';
+          if (!notifySubmitted) {
+            alert('Please complete the transfer to our DIB bank account and submit the "I\'ve Sent the Money" form before confirming.');
+            return;
+          }
+          appState.pendingConfirmation = {
+            method: 'pesalink',
+            message: 'Your PesaLink payment details were received. We will verify the credit on our DIB bank account and confirm your booking within 2 business hours.'
+          };
+        } else if (method === 'wu') {
+          const wuVerified = $('#wu-verify-success') && $('#wu-verify-success').style.display === 'block';
+          if (!wuVerified) {
+            alert('Please enter and verify your Western Union MTCN first.');
+            return;
+          }
+          appState.pendingConfirmation = {
+            method: 'western_union',
+            message: 'Your Western Union payment has been verified. Your booking is confirmed.'
+          };
+        }
+        // For aggregator mode, a real integration would redirect to provider.
+        submitPayment();
+        return;
+      }
+
+      // Card flow (existing)
       if (!payForm.checkValidity()) {
         payForm.reportValidity();
         return;
@@ -779,6 +1004,7 @@
     renderCanadaVisual();
     renderCompactBrandLogo();
     attachGlobalHandlers();
+    initPaymentMethodSelector();
     initFAQ();
     initBackToTop();
     initNewsletter();

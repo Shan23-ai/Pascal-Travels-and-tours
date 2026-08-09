@@ -55,6 +55,10 @@ app.get('/api/health', (req, res) => {
 app.use('/api/webhooks', require('./routes/webhooks'));
 app.use('/api/payments', require('./routes/payments'));
 
+/* ---- Jobs & Agents API routes ---- */
+app.use('/api/jobs', require('./routes/jobs'));
+app.use('/api/agents', require('./routes/agents'));
+
 /* ---- Static frontend (if files exist) ---- */
 // The frontend (index.html, app.js, style.css) lives in the parent of /server.
 const staticDir = path.join(__dirname, '..');

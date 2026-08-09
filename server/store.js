@@ -14,14 +14,161 @@ const config = require('./config');
  * IN-MEMORY STORE
  * ============================================== */
 class MemoryStore {
-  constructor() {
+constructor() {
     this.bookings = [];
     this.payments = [];
     this.transactions = [];
     this.pesalinkInstructions = [];
     this.wuVerifications = [];
     this.webhookEvents = [];
+    this.jobs = [];
+    this.agents = [];
+    this.candidates = [];
+    this.commissions = [];
   }
+
+  /* ---- jobs ---- */
+  async createJob(data) {
+    const job = {
+      id: uuidv4(),
+      title: data.title,
+      country: data.country,
+      flag: data.flag || '',
+      city: data.city || '',
+      type: data.type || '',
+      salary: data.salary || '',
+      description: data.description,
+      requirements: data.requirements || [],
+      applicationLink: data.applicationLink || '',
+      active: data.active !== undefined ? data.active : true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    this.jobs.push(job);
+    return job;
+  }
+
+  async listJobs(activeOnly = true) {
+    return this.jobs.filter(j => !activeOnly || j.active);
+  }
+
+  async getJob(id) {
+    return this.jobs.find(j => j.id === id) || null;
+  }
+
+  async updateJob(id, patch) {
+    const job = this.jobs.find(j => j.id === id);
+    if (!job) return null;
+    Object.assign(job, patch, { updatedAt: new Date().toISOString() });
+    return job;
+  }
+
+  async deleteJob(id) {
+    const idx = this.jobs.findIndex(j => j.id === id);
+    if (idx === -1) return null;
+    return this.jobs.splice(idx, 1)[0];
+  }
+
+  /* ---- agents ---- */
+  async createAgent(data) {
+    const agent = {
+      id: uuidv4(),
+      agencyName: data.agencyName,
+      registrationNumber: data.registrationNumber,
+      contactPersonName: data.contactPersonName,
+      contactPersonEmail: data.contactPersonEmail,
+      phone: data.phone,
+      countryOperation: data.countryOperation,
+      specializations: data.specializations || [],
+      monthlyCandidates: data.monthlyCandidates || 0,
+      passwordHash: data.passwordHash,
+      status: 'PENDING',
+      approvedAt: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    this.agents.push(agent);
+    return agent;
+  }
+
+  async getAgent(id) {
+    return this.agents.find(a => a.id === id) || null;
+  }
+
+  async getAgentByEmail(email) {
+    return this.agents.find(a => a.contactPersonEmail.toLowerCase() === String(email).toLowerCase()) || null;
+  }
+
+  async listAgents() {
+    return this.agents;
+  }
+
+  async updateAgent(id, patch) {
+    const agent = this.agents.find(a => a.id === id);
+    if (!agent) return null;
+    Object.assign(agent, patch, { updatedAt: new Date().toISOString() });
+    return agent;
+  }
+
+  /* ---- candidates ---- */
+  async createCandidate(data) {
+    const candidate = {
+      id: uuidv4(),
+      agentId: data.agentId,
+      candidateName: data.candidateName,
+      candidateEmail: data.candidateEmail,
+      candidatePhone: data.candidatePhone,
+      countryInterest: data.countryInterest,
+      visaType: data.visaType,
+      cvFilename: data.cvFilename || '',
+      notes: data.notes || '',
+      status: 'SUBMITTED',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    this.candidates.push(candidate);
+    return candidate;
+  }
+
+  async getCandidate(id) {
+    return this.candidates.find(c => c.id === id) || null;
+  }
+
+  async listCandidatesByAgent(agentId) {
+    return this.candidates.filter(c => c.agentId === agentId);
+  }
+
+  async listAllCandidates() {
+    return this.candidates;
+  }
+
+  async updateCandidate(id, patch) {
+    const candidate = this.candidates.find(c => c.id === id);
+    if (!candidate) return null;
+    Object.assign(candidate, patch, { updatedAt: new Date().toISOString() });
+    return candidate;
+  }
+
+  /* ---- commissions ---- */
+  async createCommission(data) {
+    const commission = {
+      id: uuidv4(),
+      agentId: data.agentId,
+      candidateId: data.candidateId || null,
+      amount: data.amount || 0,
+      currency: data.currency || 'USD',
+      status: 'PENDING',
+      paidAt: null,
+      createdAt: new Date().toISOString()
+    };
+    this.commissions.push(commission);
+    return commission;
+  }
+
+  async listCommissionsByAgent(agentId) {
+    return this.commissions.filter(c => c.agentId === agentId);
+  }
+
 
   /* ---- bookings ---- */
   async createBooking(data) {
@@ -474,6 +621,215 @@ class PostgresStore {
   async markWebhookProcessed(id) {
     const rows = await this._query(`UPDATE webhook_events SET processed = TRUE WHERE id = $1 RETURNING *`, [id]);
     return rows[0] || null;
+  }
+
+  /* ---- jobs (postgres) ---- */
+  async createJob(data) {
+    const rows = await this._query(`
+      INSERT INTO jobs (title, country, flag, city, type, salary, description, requirements, application_link, active)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
+      RETURNING id, title, country, flag, city, type, salary, description,
+                requirements, application_link AS "applicationLink", active,
+                created_at AS "createdAt", updated_at AS "updatedAt"
+    `, [data.title, data.country, data.flag || '', data.city || '', data.type || '',
+        data.salary || '', data.description, JSON.stringify(data.requirements || []),
+        data.applicationLink || '', data.active !== undefined ? data.active : true]);
+    return rows[0];
+  }
+
+  async listJobs(activeOnly = true) {
+    return this._query(
+      `SELECT id, title, country, flag, city, type, salary, description,
+              requirements, application_link AS "applicationLink", active,
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM jobs ${activeOnly ? 'WHERE active = TRUE' : ''} ORDER BY created_at DESC`);
+  }
+
+  async getJob(id) {
+    const rows = await this._query(
+      `SELECT id, title, country, flag, city, type, salary, description,
+              requirements, application_link AS "applicationLink", active,
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM jobs WHERE id = $1`, [id]);
+    return rows[0] || null;
+  }
+
+  async updateJob(id, patch) {
+    const allowed = ['title', 'country', 'flag', 'city', 'type', 'salary', 'description', 'requirements', 'applicationLink', 'active'];
+    const setClauses = [];
+    const params = [];
+    allowed.forEach((key, idx) => {
+      if (patch[key] !== undefined) {
+        setClauses.push(`${this._snake(key)} = $${params.length + 1}`);
+        params.push(key === 'requirements' ? JSON.stringify(patch[key]) : patch[key]);
+      }
+    });
+    if (setClauses.length === 0) return this.getJob(id);
+    setClauses.push(`updated_at = now()`);
+    params.push(id);
+    const rows = await this._query(
+      `UPDATE jobs SET ${setClauses.join(', ')} WHERE id = $${params.length}
+       RETURNING id, title, country, flag, city, type, salary, description,
+                 requirements, application_link AS "applicationLink", active,
+                 updated_at AS "updatedAt"`, params);
+    return rows[0] || null;
+  }
+
+  async deleteJob(id) {
+    const rows = await this._query(`DELETE FROM jobs WHERE id = $1 RETURNING id`, [id]);
+    return rows[0] || null;
+  }
+
+  /* ---- agents (postgres) ---- */
+  async createAgent(data) {
+    const rows = await this._query(`
+      INSERT INTO agents (agency_name, registration_number, contact_person_name, contact_person_email,
+                          phone, country_operation, specializations, monthly_candidates, password_hash, status)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'PENDING')
+      RETURNING id, agency_name AS "agencyName", registration_number AS "registrationNumber",
+                contact_person_name AS "contactPersonName", contact_person_email AS "contactPersonEmail",
+                phone, country_operation AS "countryOperation", specializations,
+                monthly_candidates AS "monthlyCandidates", status,
+                created_at AS "createdAt", updated_at AS "updatedAt"
+    `, [data.agencyName, data.registrationNumber, data.contactPersonName, data.contactPersonEmail,
+        data.phone, data.countryOperation, JSON.stringify(data.specializations || []),
+        data.monthlyCandidates || 0, data.passwordHash]);
+    return rows[0];
+  }
+
+  async getAgent(id) {
+    const rows = await this._query(
+      `SELECT id, agency_name AS "agencyName", registration_number AS "registrationNumber",
+              contact_person_name AS "contactPersonName", contact_person_email AS "contactPersonEmail",
+              phone, country_operation AS "countryOperation", specializations,
+              monthly_candidates AS "monthlyCandidates", status, approved_at AS "approvedAt",
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM agents WHERE id = $1`, [id]);
+    return rows[0] || null;
+  }
+
+  async getAgentByEmail(email) {
+    const rows = await this._query(
+      `SELECT id, agency_name AS "agencyName", registration_number AS "registrationNumber",
+              contact_person_name AS "contactPersonName", contact_person_email AS "contactPersonEmail",
+              phone, country_operation AS "countryOperation", specializations,
+              monthly_candidates AS "monthlyCandidates", status, approved_at AS "approvedAt",
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM agents WHERE lower(contact_person_email) = lower($1)`, [email]);
+    return rows[0] || null;
+  }
+
+  async listAgents() {
+    return this._query(
+      `SELECT id, agency_name AS "agencyName", registration_number AS "registrationNumber",
+              contact_person_name AS "contactPersonName", contact_person_email AS "contactPersonEmail",
+              phone, country_operation AS "countryOperation", specializations,
+              monthly_candidates AS "monthlyCandidates", status, approved_at AS "approvedAt",
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM agents ORDER BY created_at DESC`);
+  }
+
+  async updateAgent(id, patch) {
+    const allowed = ['status', 'approvedAt'];
+    const setClauses = [];
+    const params = [];
+    allowed.forEach((key, idx) => {
+      if (patch[key] !== undefined) {
+        setClauses.push(`${this._snake(key)} = $${params.length + 1}`);
+        params.push(patch[key]);
+      }
+    });
+    if (setClauses.length === 0) return this.getAgent(id);
+    setClauses.push(`updated_at = now()`);
+    params.push(id);
+    const rows = await this._query(
+      `UPDATE agents SET ${setClauses.join(', ')} WHERE id = $${params.length}
+       RETURNING id, status, approved_at AS "approvedAt", updated_at AS "updatedAt"`, params);
+    return rows[0] || null;
+  }
+
+  /* ---- candidates (postgres) ---- */
+  async createCandidate(data) {
+    const rows = await this._query(`
+      INSERT INTO candidates (agent_id, candidate_name, candidate_email, candidate_phone,
+                              country_interest, visa_type, cv_filename, notes, status)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'SUBMITTED')
+      RETURNING id, agent_id AS "agentId", candidate_name AS "candidateName",
+                candidate_email AS "candidateEmail", candidate_phone AS "candidatePhone",
+                country_interest AS "countryInterest", visa_type AS "visaType",
+                cv_filename AS "cvFilename", notes, status,
+                created_at AS "createdAt", updated_at AS "updatedAt"
+    `, [data.agentId, data.candidateName, data.candidateEmail, data.candidatePhone,
+        data.countryInterest, data.visaType, data.cvFilename || '', data.notes || '']);
+    return rows[0];
+  }
+
+  async getCandidate(id) {
+    const rows = await this._query(
+      `SELECT id, agent_id AS "agentId", candidate_name AS "candidateName",
+              candidate_email AS "candidateEmail", candidate_phone AS "candidatePhone",
+              country_interest AS "countryInterest", visa_type AS "visaType",
+              cv_filename AS "cvFilename", notes, status,
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM candidates WHERE id = $1`, [id]);
+    return rows[0] || null;
+  }
+
+  async listCandidatesByAgent(agentId) {
+    return this._query(
+      `SELECT id, agent_id AS "agentId", candidate_name AS "candidateName",
+              candidate_email AS "candidateEmail", candidate_phone AS "candidatePhone",
+              country_interest AS "countryInterest", visa_type AS "visaType",
+              cv_filename AS "cvFilename", notes, status,
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM candidates WHERE agent_id = $1 ORDER BY created_at DESC`, [agentId]);
+  }
+
+  async listAllCandidates() {
+    return this._query(
+      `SELECT id, agent_id AS "agentId", candidate_name AS "candidateName",
+              candidate_email AS "candidateEmail", candidate_phone AS "candidatePhone",
+              country_interest AS "countryInterest", visa_type AS "visaType",
+              cv_filename AS "cvFilename", notes, status,
+              created_at AS "createdAt", updated_at AS "updatedAt"
+       FROM candidates ORDER BY created_at DESC`);
+  }
+
+  async updateCandidate(id, patch) {
+    const allowed = ['status', 'cvFilename'];
+    const setClauses = [];
+    const params = [];
+    allowed.forEach((key, idx) => {
+      if (patch[key] !== undefined) {
+        setClauses.push(`${this._snake(key)} = $${params.length + 1}`);
+        params.push(patch[key]);
+      }
+    });
+    if (setClauses.length === 0) return this.getCandidate(id);
+    setClauses.push(`updated_at = now()`);
+    params.push(id);
+    const rows = await this._query(
+      `UPDATE candidates SET ${setClauses.join(', ')} WHERE id = $${params.length}
+       RETURNING id, status, cv_filename AS "cvFilename", updated_at AS "updatedAt"`, params);
+    return rows[0] || null;
+  }
+
+  /* ---- commissions (postgres) ---- */
+  async createCommission(data) {
+    const rows = await this._query(`
+      INSERT INTO agent_commissions (agent_id, candidate_id, amount, currency, status)
+      VALUES ($1,$2,$3,$4,'PENDING')
+      RETURNING id, agent_id AS "agentId", candidate_id AS "candidateId",
+                amount, currency, status, paid_at AS "paidAt", created_at AS "createdAt"
+    `, [data.agentId, data.candidateId || null, data.amount || 0, data.currency || 'USD']);
+    return rows[0];
+  }
+
+  async listCommissionsByAgent(agentId) {
+    return this._query(
+      `SELECT id, agent_id AS "agentId", candidate_id AS "candidateId",
+              amount, currency, status, paid_at AS "paidAt", created_at AS "createdAt"
+       FROM agent_commissions WHERE agent_id = $1 ORDER BY created_at DESC`, [agentId]);
   }
 
   _snake(camel) {

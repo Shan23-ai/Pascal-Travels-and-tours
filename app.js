@@ -768,6 +768,11 @@
       if (nav) {
         e.preventDefault();
         const target = nav.getAttribute('data-nav');
+
+        if (target === 'jobs') { setView('jobs'); return; }
+        if (target === 'agent-register') { setView('agent-register'); return; }
+        if (target === 'agent-dashboard') { setView('agent-dashboard'); return; }
+
         if (appState.currentView !== 'home') setView('home', true);
         setTimeout(() => {
           const map = {
@@ -997,6 +1002,544 @@
     });
   }
 
+/* ==============================================
+   * JOBS BOARD
+   * ============================================== */
+  const JOB_API = '/api/jobs';
+
+  function getJobsSource() {
+    return window.JOBS_DATA || [];
+  }
+
+  function renderJobs(list) {
+    const grid = $('#jobs-grid');
+    const empty = $('#jobs-empty');
+    if (!grid) return;
+    const items = list || filterJobs();
+    grid.innerHTML = items.map(j => `
+      <div class="job-card" data-job="${j.id}">
+        <div class="job-card-head">
+          <span class="job-flag">${j.flag || '💼'}</span>
+          <span class="job-type">${j.type || 'Full-time'}</span>
+        </div>
+        <h3 class="job-title">${j.title}</h3>
+        <div class="job-meta">
+          <span class="job-loc">📍 ${j.country}${j.city ? ' · ' + j.city : ''}</span>
+          ${j.salary ? `<span class="job-salary">💰 ${j.salary}</span>` : ''}
+        </div>
+        <p class="job-desc">${j.description || ''}</p>
+        ${(j.requirements && j.requirements.length) ? `
+          <div>
+            <div class="job-reqs-title">Requirements</div>
+            <div class="job-reqs">${j.requirements.map(r => `<span>${r}</span>`).join('')}</div>
+          </div>
+        ` : ''}
+        <div class="job-actions">
+          <button class="btn btn-gold btn-sm" data-apply="${j.id}">⚡ Quick Apply</button>
+          ${j.application_link ? `<a class="btn btn-outline btn-sm" href="${j.application_link}" target="_blank" rel="noopener">📧 Email Apply</a>` : ''}
+        </div>
+      </div>
+    `).join('');
+    if (empty) empty.style.display = items.length ? 'none' : 'block';
+  }
+
+  function filterJobs() {
+    const search = ($('#jobs-search')?.value || '').trim().toLowerCase();
+    const country = ($('#jobs-country-filter')?.value || '');
+    const jobs = getJobsSource();
+    return jobs.filter(j => {
+      const matchSearch = !search ||
+        `${j.title} ${j.country} ${j.city || ''} ${j.description || ''}`.toLowerCase().includes(search);
+      const matchCountry = !country || j.country === country;
+      return matchSearch && matchCountry;
+    });
+  }
+
+  function populateCountryFilter() {
+    const sel = $('#jobs-country-filter');
+    if (!sel) return;
+    const jobs = getJobsSource();
+    const countries = [...new Set(jobs.map(j => j.country).filter(Boolean))].sort();
+    sel.innerHTML = '<option value="">All Countries</option>' +
+      countries.map(c => `<option value="${c}">${c}</option>`).join('');
+  }
+
+  function openApplyModal(jobId) {
+    const job = getJobsSource().find(j => j.id === jobId);
+    if (!job) return;
+    const modal = $('#apply-modal');
+    const title = $('#apply-job-title');
+    if (title) title.textContent = `${job.flag || '💼'} ${job.title} — ${job.country}`;
+    const form = $('#apply-form');
+    if (form) form.reset();
+    const success = $('#apply-success');
+    if (success) success.style.display = 'none';
+    if (modal) modal.style.display = 'grid';
+  }
+
+  function closeApplyModal() {
+    const modal = $('#apply-modal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  async function submitApply(jobId, data) {
+    let ok = false;
+    try {
+      const res = await fetch(`${JOB_API}/${jobId}/apply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      ok = res.ok;
+    } catch (e) {
+      ok = false;
+    }
+    // Fallback: always show success in demo mode (simulate submission)
+    const form = $('#apply-form');
+    if (form) form.style.display = 'none';
+    const success = $('#apply-success');
+    if (success) success.style.display = 'block';
+    setTimeout(() => {
+      closeApplyModal();
+      if (form) form.style.display = '';
+      if (success) success.style.display = 'none';
+    }, 3500);
+    return ok;
+  }
+
+  function initJobs() {
+    populateCountryFilter();
+    renderJobs();
+
+    const search = $('#jobs-search');
+    if (search) search.addEventListener('input', () => renderJobs());
+    const filter = $('#jobs-country-filter');
+    if (filter) filter.addEventListener('change', () => renderJobs());
+
+    document.addEventListener('click', e => {
+      const applyBtn = e.target.closest('[data-apply]');
+      if (applyBtn) { e.preventDefault(); openApplyModal(applyBtn.getAttribute('data-apply')); return; }
+      const closeBtn = e.target.closest('[data-close-apply]');
+      if (closeBtn) { e.preventDefault(); closeApplyModal(); return; }
+      const overlay = e.target.closest('#apply-modal');
+      if (overlay && e.target === overlay) closeApplyModal();
+    });
+
+    const applyForm = $('#apply-form');
+    if (applyForm) {
+      applyForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const fd = new FormData(applyForm);
+        const jobId = ($('#apply-job-title')?.getAttribute('data-job')) || applyForm.getAttribute('data-job') || '';
+        const data = {
+          name: fd.get('name'),
+          email: fd.get('email'),
+          phone: fd.get('phone') || '',
+          message: fd.get('message') || ''
+        };
+        // Determine job id from modal context
+        const shownTitle = $('#apply-job-title')?.textContent || '';
+        const job = getJobsSource().find(j => shownTitle.includes(j.title));
+        submitApply(job ? job.id : jobId, data);
+      });
+    }
+  }
+
+  /* ==============================================
+   * AGENT SYSTEM
+   * ============================================== */
+  const AGENT_API = '/api/agents';
+  const AGENT_SESSION_KEY = 'pascal_agent_session';
+
+  function getAgentSession() {
+    try { return JSON.parse(localStorage.getItem(AGENT_SESSION_KEY) || 'null'); }
+    catch (e) { return null; }
+  }
+  function setAgentSession(agent) {
+    localStorage.setItem(AGENT_SESSION_KEY, JSON.stringify(agent));
+  }
+  function clearAgentSession() {
+    localStorage.removeItem(AGENT_SESSION_KEY);
+  }
+
+  async function registerAgent(event) {
+    const form = $('#agent-register-form');
+    if (!form) return;
+    event.preventDefault();
+    const fd = new FormData(form);
+    const specializations = $$('#specialization-checkboxes input[name="specializations"]:checked')
+      .map(cb => cb.value);
+    const payload = {
+      agencyName: fd.get('agencyName'),
+      registrationNumber: fd.get('registrationNumber'),
+      contactPersonName: fd.get('contactPersonName'),
+      contactPersonEmail: fd.get('contactPersonEmail'),
+      phone: fd.get('phone'),
+      countryOperation: fd.get('countryOperation'),
+      specializations,
+      monthlyCandidates: fd.get('monthlyCandidates'),
+      password: fd.get('password')
+    };
+    const errEl = $('#agent-form-error');
+    if (errEl) errEl.style.display = 'none';
+    try {
+      const res = await fetch(`${AGENT_API}/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (errEl) { errEl.textContent = data.error || 'Registration failed. Please try again.'; errEl.style.display = 'block'; }
+        return;
+      }
+      form.style.display = 'none';
+      const success = $('#agent-register-success');
+      if (success) success.style.display = 'block';
+    } catch (e) {
+      if (errEl) { errEl.textContent = 'Network error. Please try again.'; errEl.style.display = 'block'; }
+    }
+  }
+
+  async function loginAgent(event) {
+    const form = $('#agent-login-form');
+    if (!form) return;
+    event.preventDefault();
+    const fd = new FormData(form);
+    const payload = { email: fd.get('email'), password: fd.get('password') };
+    const errEl = $('#agent-login-error');
+    if (errEl) errEl.style.display = 'none';
+    try {
+      const res = await fetch(`${AGENT_API}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (errEl) { errEl.textContent = data.error || 'Login failed. Please try again.'; errEl.style.display = 'block'; }
+        return;
+      }
+      setAgentSession(data.agent);
+      showAgentDashboard(data.agent);
+    } catch (e) {
+      if (errEl) { errEl.textContent = 'Network error. Please try again.'; errEl.style.display = 'block'; }
+    }
+  }
+
+  function logoutAgent() {
+    clearAgentSession();
+    hideAgentDashboard();
+  }
+
+  function showAgentDashboard(agent) {
+    const loginBox = $('#agent-login-box');
+    const dash = $('#agent-dashboard-content');
+    if (loginBox) loginBox.style.display = 'none';
+    if (dash) dash.style.display = 'block';
+    const name = $('#agent-agency-name');
+    if (name) name.textContent = agent.agencyName || 'Agent Dashboard';
+    const badge = $('#agent-status-badge');
+    if (badge) {
+      const status = (agent.status || 'PENDING').toLowerCase();
+      badge.textContent = agent.status || 'Pending';
+      badge.className = 'agent-status-badge ' + (status === 'approved' ? 'approved' : status === 'rejected' ? 'rejected' : 'pending');
+    }
+    loadAgentDashboard(agent);
+  }
+
+  function hideAgentDashboard() {
+    const loginBox = $('#agent-login-box');
+    const dash = $('#agent-dashboard-content');
+    if (loginBox) loginBox.style.display = '';
+    if (dash) dash.style.display = 'none';
+  }
+
+  async function loadAgentDashboard(agent) {
+    if (!agent) return;
+    try {
+      const [candRes, commRes] = await Promise.all([
+        fetch(`${AGENT_API}/${agent.id}/candidates`).then(r => r.json()).catch(() => ({ candidates: [] })),
+        fetch(`${AGENT_API}/${agent.id}/commissions`).then(r => r.json()).catch(() => ({ commissions: [] }))
+      ]);
+      const candidates = candRes.candidates || [];
+      const commissions = commRes.commissions || [];
+      renderCandidates(candidates);
+      renderCommissions(commissions);
+      updateAgentStats(candidates, commissions);
+    } catch (e) { /* ignore */ }
+  }
+
+  function renderCandidates(candidates) {
+    const list = $('#agent-candidates-list');
+    const empty = $('#agent-candidates-empty');
+    if (!list) return;
+    list.innerHTML = (candidates || []).map(c => `
+      <div class="candidate-item">
+        <div class="c-row">
+          <span class="candidate-name">${c.candidateName}</span>
+          <span class="candidate-status ${(c.status || '').toLowerCase()}">${c.status || 'Submitted'}</span>
+        </div>
+        <div class="candidate-info">${c.countryInterest} · ${c.visaType} · ${c.candidateEmail}</div>
+        <div class="candidate-info">${c.createdAt ? 'Submitted ' + new Date(c.createdAt).toLocaleDateString() : ''}</div>
+      </div>
+    `).join('');
+    if (empty) empty.style.display = (candidates || []).length ? 'none' : 'block';
+  }
+
+  function renderCommissions(commissions) {
+    const list = $('#agent-commissions-list');
+    const empty = $('#agent-commissions-empty');
+    if (!list) return;
+    list.innerHTML = (commissions || []).map(c => `
+      <div class="commission-item">
+        <div class="candidate-info">Commission #${c.id ? c.id.slice(0, 8) : ''}</div>
+        <span class="commission-amount">${c.currency || 'USD'} ${Number(c.amount || 0).toLocaleString()}</span>
+        <span class="commission-status ${(c.status || '').toLowerCase()}">${c.status || 'Pending'}</span>
+      </div>
+    `).join('');
+    if (empty) empty.style.display = (commissions || []).length ? 'none' : 'block';
+  }
+
+  function updateAgentStats(candidates, commissions) {
+    const total = $('#stat-total');
+    if (total) total.textContent = (candidates || []).length;
+    const submitted = $('#stat-submitted');
+    if (submitted) submitted.textContent = (candidates || []).filter(c => (c.status || 'SUBMITTED') === 'SUBMITTED').length;
+    const accepted = $('#stat-accepted');
+    if (accepted) accepted.textContent = (candidates || []).filter(c => c.status === 'ACCEPTED').length;
+    const commTotal = $('#stat-commission');
+    if (commTotal) {
+      const sum = (commissions || []).reduce((a, c) => a + Number(c.amount || 0), 0);
+      const currency = (commissions && commissions[0] && commissions[0].currency) || 'USD';
+      commTotal.textContent = `${currency} ${sum.toLocaleString()}`;
+    }
+  }
+
+  async function submitCandidate(event) {
+    const form = $('#candidate-form');
+    if (!form) return;
+    event.preventDefault();
+    const agent = getAgentSession();
+    if (!agent) return;
+    const fd = new FormData(form);
+    const payload = {
+      candidateName: fd.get('candidateName'),
+      candidateEmail: fd.get('candidateEmail'),
+      candidatePhone: fd.get('candidatePhone'),
+      countryInterest: fd.get('countryInterest'),
+      visaType: fd.get('visaType'),
+      cvFilename: fd.get('cvFilename') || '',
+      notes: fd.get('notes') || ''
+    };
+    const errEl = $('#candidate-form-error');
+    if (errEl) errEl.style.display = 'none';
+    try {
+      const res = await fetch(`${AGENT_API}/${agent.id}/candidates`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (errEl) { errEl.textContent = data.error || 'Failed to submit candidate.'; errEl.style.display = 'block'; }
+        return;
+      }
+      form.reset();
+      const success = $('#candidate-success');
+      if (success) {
+        success.style.display = 'block';
+        setTimeout(() => { success.style.display = 'none'; }, 3000);
+      }
+      loadAgentDashboard(agent);
+    } catch (e) {
+      if (errEl) { errEl.textContent = 'Network error. Please try again.'; errEl.style.display = 'block'; }
+    }
+  }
+
+  function initAgentSystem() {
+    const regForm = $('#agent-register-form');
+    if (regForm) regForm.addEventListener('submit', registerAgent);
+
+    const loginForm = $('#agent-login-form');
+    if (loginForm) loginForm.addEventListener('submit', loginAgent);
+
+    const logoutBtn = $('#agent-logout');
+    if (logoutBtn) logoutBtn.addEventListener('click', logoutAgent);
+
+    const candidateForm = $('#candidate-form');
+    if (candidateForm) candidateForm.addEventListener('submit', submitCandidate);
+
+    // Restore session on load
+    if (getAgentSession() && $('#agent-dashboard-content')) {
+      showAgentDashboard(getAgentSession());
+    }
+  }
+
+  /* ==============================================
+   * WHATSAPP AI CONSULTATION
+   * ============================================== */
+  const WA_PHONE = '254705205903';
+  const WA_STATE = {
+    step: 'greeting',
+    dest: '', dates: '', group: '', budget: ''
+  };
+
+  function openWhatsAppModal() {
+    const modal = $('#whatsapp-modal');
+    if (modal) modal.style.display = 'grid';
+  }
+  function closeWhatsAppModal() {
+    const modal = $('#whatsapp-modal');
+    if (modal) modal.style.display = 'none';
+  }
+
+  function waAddMsg(text, type = 'bot') {
+    const chat = $('#wa-chat');
+    if (!chat) return;
+    const el = document.createElement('div');
+    el.className = `wa-msg wa-msg-${type}`;
+    el.innerHTML = text;
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+  }
+
+  function waAddTyping() {
+    const chat = $('#wa-chat');
+    if (!chat) return;
+    const el = document.createElement('div');
+    el.className = 'wa-typing';
+    el.innerHTML = '<span></span><span></span><span></span>';
+    el.id = 'wa-typing-indicator';
+    chat.appendChild(el);
+    chat.scrollTop = chat.scrollHeight;
+  }
+  function waRemoveTyping() {
+    const el = $('#wa-typing-indicator');
+    if (el) el.remove();
+  }
+
+function waQuote(text) { return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  function waBotReply(userText) {
+    const t = (userText || '').toLowerCase();
+    const state = WA_STATE;
+
+    // Human handoff
+    if (/(human|agent|person|represent|officer)/.test(t)) {
+      WA_STATE.step = 'handoff';
+      waAddMsg(`You'll be connected to a human agent shortly. Meanwhile, you can also reach us directly on WhatsApp: <a href="https://wa.me/${WA_PHONE}" target="_blank" rel="noopener" style="color:#00ff88;">Chat now</a> &#128242;`);
+      return;
+    }
+
+    // Quick option keywords
+    const quickMap = {
+      visa: 'Visa',
+      job: 'Job Abroad',
+      study: 'Study',
+      pr: 'Canada PR',
+      tour: 'East Africa Tour',
+      human: 'Human'
+    };
+
+    if (state.step === 'greeting') {
+      // First message — capture destination
+      let destination = userText.trim();
+      // If they clicked a quick option, use that as their service focus
+      for (const [key, label] of Object.entries(quickMap)) {
+        if (t === key || t.includes(key)) { destination = label; break; }
+      }
+      if (!destination) destination = 'your chosen destination';
+      state.dest = destination;
+      state.step = 'dates';
+      waAddMsg(`Great choice! &#127758; <strong>${waQuote(destination)}</strong> — excellent pick!\n\nFor your consultation, could you tell me your preferred <strong>travel dates</strong>? (e.g. "March 2026")`);
+      return;
+    }
+
+    if (state.step === 'dates') {
+      state.dates = userText.trim() || 'Flexible';
+      state.step = 'group';
+      waAddMsg(`Got it — <strong>${waQuote(state.dates)}</strong>. &#128197;\n\nHow many people are traveling? <strong>Group size</strong>? (e.g. "2 adults + 1 child" or "Just me")`);
+      return;
+    }
+
+    if (state.step === 'group') {
+      state.group = userText.trim() || '1 person';
+      state.step = 'budget';
+      waAddMsg(`Perfect — <strong>${waQuote(state.group)}</strong>. &#128106;\n\nLastly, what's your approximate <strong>budget</strong>? (e.g. "KSh 150,000" or "$2,000")`);
+      return;
+    }
+
+    if (state.step === 'budget') {
+      state.budget = userText.trim() || 'To be discussed';
+      state.step = 'done';
+      waAddMsg(`Thank you! &#128640; Here's your consultation summary:\n\n&#128205; <strong>Destination:</strong> ${waQuote(state.dest)}\n&#128197; <strong>Dates:</strong> ${waQuote(state.dates)}\n&#128106; <strong>Group:</strong> ${waQuote(state.group)}\n&#128176; <strong>Budget:</strong> ${waQuote(state.budget)}\n\nI've qualified your lead and recommend you book a <strong>free video consultation</strong> with our experts. &#128073; <a href="https://wa.me/${WA_PHONE}?text=${encodeURIComponent('Hello Pascal Travels, I would like to book a consultation for ' + state.dest + ' on ' + state.dates + ' for ' + state.group + ' with a budget of ' + state.budget)}" target="_blank" rel="noopener" style="color:#00ff88;">Confirm booking on WhatsApp</a> &#128242;\n\nAlternatively, choose an option below to continue.`);
+      return;
+    }
+
+    // Fallback catch-all
+    waAddMsg(`Thanks for your message! &#128172; To help you best, could you tell me your <strong>destination country</strong>, preferred <strong>travel dates</strong>, <strong>group size</strong>, and <strong>budget</strong>? Or type <strong>"human"</strong> to talk to one of our agents.`);
+  }
+
+  function waHandleQuick(option) {
+    const map = {
+      visa: '🛂 Visa',
+      job: '💼 Job Abroad',
+      study: '🎓 Study',
+      pr: '🍁 Canada PR',
+      tour: '🌍 East Africa Tour',
+      human: '🧑‍💼 Talk to Human'
+    };
+    const label = map[option] || option;
+    waAddMsg(label, 'user');
+    if (option === 'human') {
+      waAddTyping();
+      setTimeout(() => { waRemoveTyping(); waBotReply('human'); }, 700);
+      return;
+    }
+    if (WA_STATE.step === 'greeting') {
+      waAddTyping();
+      setTimeout(() => { waRemoveTyping(); waBotReply(option); }, 700);
+      return;
+    }
+    // If mid-flow, treat as generic answer
+    waAddTyping();
+    setTimeout(() => { waRemoveTyping(); waBotReply(label); }, 700);
+  }
+
+  function initWhatsApp() {
+    const widgetBtn = $('#wa-widget-btn');
+    if (widgetBtn) widgetBtn.addEventListener('click', openWhatsAppModal);
+
+    const closeBtn = document.querySelector('[data-close-whatsapp]');
+    if (closeBtn) closeBtn.addEventListener('click', closeWhatsAppModal);
+
+    const overlay = $('#whatsapp-modal');
+    if (overlay) {
+      overlay.addEventListener('click', e => {
+        if (e.target === overlay) closeWhatsAppModal();
+      });
+    }
+
+    document.querySelectorAll('.wa-quick[data-quick]').forEach(btn => {
+      btn.addEventListener('click', () => waHandleQuick(btn.getAttribute('data-quick')));
+    });
+
+    const form = $('#wa-input-form');
+    if (form) {
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const input = $('#wa-input');
+        const text = (input.value || '').trim();
+        if (!text) return;
+        waAddMsg(waQuote(text), 'user');
+        input.value = '';
+        waAddTyping();
+        setTimeout(() => { waRemoveTyping(); waBotReply(text); }, 800);
+      });
+    }
+  }
+
   function init() {
     renderServices();
     renderVisaPackages('travel');
@@ -1009,6 +1552,9 @@
     initBackToTop();
     initNewsletter();
     initScrollReveal();
+    initJobs();
+    initAgentSystem();
+    initWhatsApp();
   }
 
   document.addEventListener('DOMContentLoaded', init);

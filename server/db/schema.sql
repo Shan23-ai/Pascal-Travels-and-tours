@@ -144,3 +144,85 @@ CREATE TABLE IF NOT EXISTS admins (
   active        BOOLEAN NOT NULL DEFAULT TRUE,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- -----------------------------------------------------
+-- 8. JOBS — job board listings
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS jobs (
+  id               UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  title            VARCHAR(200) NOT NULL,
+  country          VARCHAR(120) NOT NULL,
+  flag             VARCHAR(20),
+  city             VARCHAR(120),
+  type             VARCHAR(50),
+  salary           VARCHAR(120),
+  description       TEXT NOT NULL,
+  requirements      JSONB DEFAULT '[]',
+  application_link VARCHAR(300),
+  active           BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at       TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_jobs_country ON jobs(country);
+
+-- -----------------------------------------------------
+-- 9. AGENTS — external recruitment agents
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS agents (
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agency_name          VARCHAR(200) NOT NULL,
+  registration_number  VARCHAR(150) NOT NULL,
+  contact_person_name  VARCHAR(150) NOT NULL,
+  contact_person_email VARCHAR(150) UNIQUE NOT NULL,
+  phone                VARCHAR(50) NOT NULL,
+  country_operation    VARCHAR(120) NOT NULL,
+  specializations      JSONB DEFAULT '[]',
+  monthly_candidates   INTEGER DEFAULT 0,
+  password_hash        VARCHAR(255) NOT NULL,
+  status               VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+  -- PENDING → APPROVED | REJECTED
+  approved_at          TIMESTAMPTZ,
+  created_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at           TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_agents_status ON agents(status);
+
+-- -----------------------------------------------------
+-- 10. CANDIDATES — submitted by agents
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS candidates (
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agent_id          UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,
+  candidate_name    VARCHAR(150) NOT NULL,
+  candidate_email   VARCHAR(150) NOT NULL,
+  candidate_phone   VARCHAR(50) NOT NULL,
+  country_interest  VARCHAR(120) NOT NULL,
+  visa_type         VARCHAR(120) NOT NULL,
+  cv_filename       VARCHAR(255),
+  notes             TEXT,
+  status            VARCHAR(30) NOT NULL DEFAULT 'SUBMITTED',
+  -- SUBMITTED → UNDER_REVIEW → ACCEPTED | REJECTED
+  created_at        TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at        TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_candidates_agent ON candidates(agent_id);
+
+-- -----------------------------------------------------
+-- 11. AGENT_COMMISSIONS — payouts to agents
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS agent_commissions (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  agent_id      UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE,
+  candidate_id  UUID REFERENCES candidates(id) ON DELETE SET NULL,
+  amount        NUMERIC(14,2) NOT NULL DEFAULT 0,
+  currency      CHAR(3) NOT NULL DEFAULT 'USD',
+  status        VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+  -- PENDING → PAID
+  paid_at       TIMESTAMPTZ,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_commissions_agent ON agent_commissions(agent_id);

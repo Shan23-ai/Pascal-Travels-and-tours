@@ -26,12 +26,14 @@
           <li><a href="#" data-nav="visas">Visa Packages</a></li>
           <li><a href="#" data-nav="work">Work Visas</a></li>
           <li><a href="#" data-nav="study">Study</a></li>
-          <li><a href="#" data-nav="pr">Canada PR</a></li>
+<li><a href="#" data-nav="pr">Canada PR</a></li>
           <li><a href="#" data-nav="tours">East Africa</a></li>
+          <li><a href="#" data-nav="jobs" data-view="jobs">💼 Jobs</a></li>
+          <li><a href="#" data-nav="partner" data-view="agent-register">🤝 Partners</a></li>
           <li><a href="#" data-nav="contact">Contact</a></li>
         </ul>
         <div class="nav-cta-group">
-          <button class="btn btn-outline-nav btn-sm" data-nav="work">💼 Apply for Jobs</button>
+          <button class="btn btn-outline-nav btn-sm" data-nav="jobs" data-view="jobs">💼 Explore Jobs</button>
           <button id="nav-cta" class="btn btn-gold btn-sm" data-nav="contact">✉️ Contact Us</button>
         </div>
       </div>
@@ -78,12 +80,15 @@
             students, and professionals move faster with honest guidance and real support.
             <strong class="text-white">Book a free consultation today and get a clear action plan in minutes.</strong>
           </p>
-          <div class="hero-ctas hero-ctas-pascal">
+<div class="hero-ctas hero-ctas-pascal">
             <button class="btn btn-red btn-lg btn-shadow" data-nav="contact" data-scroll-nav="contact">
               🎯 Book Free Consultation
             </button>
             <button class="btn btn-gold btn-lg btn-shadow" data-nav="services">
               💼 Start Your Application
+            </button>
+            <button class="btn btn-outline-white btn-lg" data-nav="jobs" data-view="jobs">
+              💼 Explore Jobs
             </button>
             <button class="btn btn-outline-white btn-lg" onclick="window.location.href='tel:+254753731136'">
               📞 Call Now
@@ -371,6 +376,62 @@
         </div>
       </section>
 
+      <!-- ============= CEO PROFILE SECTION ============= -->
+      <section class="section section-dark" id="ceo">
+        <div class="container">
+          <div class="section-header">
+            <span class="eyebrow text-gold-gradient">MEET OUR LEADERSHIP</span>
+            <h2 class="section-title text-white">A Message From Our <span class="text-gold-gradient">Founder & CEO.</span></h2>
+            <p class="section-sub text-white-op">The vision behind Pascal Travels & Tour.</p>
+          </div>
+          <div class="glass-card ceo-card">
+            <div class="ceo-grid">
+              <div class="ceo-photo-col">
+                <div class="ceo-photo" id="ceo-photo">
+                  <div class="ceo-photo-inner">
+                    <img src="assets/ceo-head.jpeg" alt="Mr. Pascal, Founder &amp; CEO" class="ceo-photo-img" />
+                    <span class="ceo-photo-label">Mr. Pascal</span>
+                  </div>
+                </div>
+                <div class="ceo-socials">
+                  <span>📘</span><span>💼</span><span>📹</span>
+                </div>
+              </div>
+              <div class="ceo-content">
+                <div class="ceo-name-wrap">
+                  <h3 class="ceo-name text-gold-gradient">Mr. Pascal</h3>
+                  <div class="ceo-title">Founder &amp; CEO</div>
+                </div>
+                <div class="ceo-glowing-line"></div>
+                <p class="ceo-bio">
+                  Founder &amp; CEO of <strong>Pascal Travels &amp; Tour</strong> — 12+ years in the travel and
+                  visa industry, helping hundreds of Kenyans study, work, and live abroad.
+                </p>
+                <blockquote class="ceo-quote">
+                  "Borders should never be barriers to opportunity. We guide you from first inquiry to
+                  arrival abroad — turning Kenyan dreams into reality."
+                </blockquote>
+                <div class="ceo-values">
+                  <div class="ceo-mission">
+                    <h5>🎯 Mission</h5>
+                    <p>Trusted, reliable, and affordable travel &amp; visa services for Kenyans seeking opportunities abroad.</p>
+                  </div>
+                  <div class="ceo-values-list">
+                    <h5>⭐ Core Values</h5>
+                    <div class="value-chips">
+                      <span>Integrity</span>
+                      <span>Reliability</span>
+                      <span>Customer-Centricity</span>
+                      <span>Excellence</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- TESTIMONIALS -->
       <section class="section section-light" id="testimonials">
         <div class="container">
@@ -525,12 +586,8 @@
       <a class="btn btn-blue" href="mailto:Pascaltravelsdoc@gmail.com?subject=Free%20Consultation">✉️ Email Us</a>
     </div>
 
-    <!-- FLOATING WHATSAPP BUTTON -->
-    <a href="https://wa.me/254705205903?text=Hello%20Pascal%20Travels%2C%20I%20would%20like%20a%20free%20consultation" target="_blank" rel="noopener" class="float-whatsapp" title="Chat with us on WhatsApp">
-      <span>💬</span>
-    </a>
-
-    <!-- BACK TO TOP BUTTON -->
+    <!-- FLOATING WHATSAPP BUTTON (premium widget is added at the end of the page) -->
+    <!-- Back to top button preserved -->
     <button id="back-to-top" class="back-to-top" title="Back to top" aria-label="Back to top">↑</button>
 
     <!-- ============= PACKAGE DETAIL VIEW ============= -->
@@ -678,35 +735,220 @@
         <!-- STEP 4: PAYMENT -->
         <div id="step-4" class="step-panel card card-white">
           <h3 class="step-title">Step 4 · Secure Payment</h3>
-          <p class="step-sub">All transactions are SSL-encrypted. No card data is stored on our servers.</p>
+          <p class="step-sub">All transactions are SSL-encrypted. Choose your preferred payment method below.</p>
+
+          <!-- PAYMENT METHOD SELECTOR -->
+          <div id="pay-method-selector" class="pay-method-selector">
+            <h4 style="margin:0 0 .4rem;color:var(--skyblue-navy);">Select Payment Method</h4>
+            <div class="pay-method-grid">
+              <label class="pay-method-opt" data-method="card">
+                <input type="radio" name="payMethod" value="card" checked />
+                <span class="pm-icon">💳</span>
+                <span class="pm-title">Card / Stripe</span>
+                <span class="pm-desc">Visa · Mastercard · Amex</span>
+              </label>
+              <label class="pay-method-opt" data-method="pesalink">
+                <input type="radio" name="payMethod" value="pesalink" />
+                <span class="pm-icon">🏦</span>
+                <span class="pm-title">DIB Bank / PesaLink</span>
+                <span class="pm-desc">Real-time up to KSh 300,000</span>
+              </label>
+              <label class="pay-method-opt" data-method="wu">
+                <input type="radio" name="payMethod" value="wu" />
+                <span class="pm-icon">🌍</span>
+                <span class="pm-title">Western Union</span>
+                <span class="pm-desc">130+ currencies · MTCN</span>
+              </label>
+            </div>
+          </div>
+
           <div class="pay-cols">
             <div class="pay-form-col">
               <div id="order-summary-sm" class="order-summary-sm"></div>
-              <form id="payment-form" class="payment-form">
-                <div class="form-field full">
-                  <label>Cardholder Name <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="JANE W KAMAU" />
+
+              <!-- METHOD PANEL: CARD / STRIPE -->
+              <div id="panel-card" class="pay-panel pay-panel-active">
+                <form id="payment-form" class="payment-form">
+                  <div class="form-field full">
+                    <label>Cardholder Name <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="JANE W KAMAU" />
+                  </div>
+                  <div class="form-field full">
+                    <label>Card Number <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19" class="card-number" />
+                  </div>
+                  <div class="form-field">
+                    <label>Expiry <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="MM / YY" maxlength="7" class="card-exp" />
+                  </div>
+                  <div class="form-field">
+                    <label>CVC <span class="text-red">*</span></label>
+                    <input type="text" required placeholder="•••" maxlength="4" class="card-cvc" />
+                  </div>
+                  <div class="pay-methods">
+                    <span class="method">💳 VISA</span>
+                    <span class="method">💳 Mastercard</span>
+                    <span class="method">🅰️ Amex</span>
+                    <span class="method">🏦 MPesa</span>
+                  </div>
+                </form>
+              </div>
+
+              <!-- METHOD PANEL: DIB BANK / PESALINK -->
+              <div id="panel-pesalink" class="pay-panel">
+                <div id="pesalink-demo-banner" class="pay-note-banner" style="display:none;">
+                  ⚠ <strong>Demo mode:</strong> Select a PesaLink option to simulate the flow.
                 </div>
-                <div class="form-field full">
-                  <label>Card Number <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="4242 4242 4242 4242" maxlength="19" class="card-number" />
+
+                <!-- Sub-mode choice: direct (manual) vs aggregator -->
+                <div id="pesalink-submode" class="pesalink-submode">
+                  <h4 style="margin:0 0 .5rem;color:var(--skyblue-navy);">How would you like to pay?</h4>
+                  <div class="submode-options">
+                    <button type="button" class="btn btn-outline btn-sm submode-btn is-active" data-pesalink-mode="manual">
+                      🏦 PesaLink via My Bank App
+                    </button>
+                    <button type="button" class="btn btn-outline btn-sm submode-btn" data-pesalink-mode="aggregator">
+                      🔗 PaySecurely (Aggregator)
+                    </button>
+                  </div>
                 </div>
-                <div class="form-field">
-                  <label>Expiry <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="MM / YY" maxlength="7" class="card-exp" />
+
+                <!-- MANUAL: DIB bank details + notify form -->
+                <div id="pesalink-manual" class="pesalink-mode-panel">
+                  <div class="dib-bank-card" id="dib-bank-details">
+                    <h4>🏦 Pay via PesaLink to our DIB Bank Account</h4>
+                    <div class="dib-detail-grid">
+                      <div><span>Bank</span><strong id="dib-bank-name">Dubai Islamic Bank (Kenya)</strong></div>
+                      <div><span>Account Name</span><strong id="dib-account-name">Pascal Travels & Tour Ltd</strong></div>
+                      <div><span>Account No.</span><strong id="dib-account-no">0101234567890</strong></div>
+                      <div><span>Branch</span><strong id="dib-branch">Tom Mboya Street, Nairobi</strong></div>
+                      <div><span>Swift</span><strong id="dib-swift">DIBKKENA</strong></div>
+                      <div><span>Amount Due</span><strong id="dib-amount" class="text-gold">—</strong></div>
+                    </div>
+                    <ol class="dib-steps">
+                      <li>Open your bank's mobile app / USSD (KCB, Equity, Co-op, StanChart, etc.)</li>
+                      <li>Choose <strong>PesaLink</strong> (real-time, works 24/7)</li>
+                      <li>Enter the DIB account details above and the exact amount</li>
+                      <li>Keep the <strong>transaction reference</strong> shown after sending</li>
+                    </ol>
+                  </div>
+
+                  <form id="pesalink-notify-form" class="notify-form" style="display:none;">
+                    <h4>✅ I've Sent the Money — Confirm My Booking</h4>
+                    <div class="form-grid-2">
+                      <div class="form-field">
+                        <label>Sender Full Name <span class="text-red">*</span></label>
+                        <input type="text" name="senderName" required placeholder="e.g. Jane Wanjiru Kamau" />
+                      </div>
+                      <div class="form-field">
+                        <label>Bank Used for PesaLink <span class="text-red">*</span></label>
+                        <select name="senderBank" required>
+                          <option value="">Select bank...</option>
+                          <option>KCB</option>
+                          <option>Equity</option>
+                          <option>Co-operative Bank</option>
+                          <option>Stanbic</option>
+                          <option>Standard Chartered</option>
+                          <option>Absa</option>
+                          <option>NCBA</option>
+                          <option>DIB Kenya</option>
+                          <option>Other</option>
+                        </select>
+                      </div>
+                      <div class="form-field">
+                        <label>PesaLink Transaction Reference <span class="text-red">*</span></label>
+                        <input type="text" name="transactionRef" required placeholder="e.g. PLK-1234567890" />
+                      </div>
+                      <div class="form-field">
+                        <label>Amount Sent (KES) <span class="text-red">*</span></label>
+                        <input type="number" name="sentAmount" required placeholder="150000" min="1" />
+                      </div>
+                    </div>
+                    <p class="notify-note">🔒 Our team verifies the credit on our DIB account and confirms your booking within <strong>2 business hours</strong>. You will receive SMS + email confirmation.</p>
+                    <button type="submit" class="btn btn-gold btn-block">Submit Transfer Details</button>
+                  </form>
+
+                  <div id="pesalink-notify-success" class="success-inline" style="display:none;">
+                    🎉 <strong>Thank you!</strong> Your transfer details have been received. We'll verify the credit on our DIB bank account and confirm your booking within 2 business hours.
+                  </div>
+
+                  <button type="button" id="btn-pesalink-notify-toggle" class="btn btn-skyblue btn-block">📤 I've Sent the Money — Notify Us</button>
                 </div>
-                <div class="form-field">
-                  <label>CVC <span class="text-red">*</span></label>
-                  <input type="text" required placeholder="•••" maxlength="4" class="card-cvc" />
+
+                <!-- AGGREGATOR: redirect -->
+                <div id="pesalink-aggregator" class="pesalink-mode-panel" style="display:none;">
+                  <div class="aggregator-card">
+                    <div class="aggr-icon">🔗</div>
+                    <h4>PaySecurely (PesaLink via Aggregator)</h4>
+                    <p>You'll be securely redirected to complete your PesaLink payment in your bank's app or the aggregator's hosted page. Your payment is confirmed instantly by webhook.</p>
+                    <button type="button" id="btn-pesalink-redirect" class="btn btn-gold btn-block">🔗 Redirect to PaySecurely</button>
+                    <a href="#" id="pesalink-payment-link" target="_blank" rel="noopener" style="display:none;"></a>
+                  </div>
                 </div>
-                <div class="pay-methods">
-                  <span class="method">💳 VISA</span>
-                  <span class="method">💳 Mastercard</span>
-                  <span class="method">🅰️ Amex</span>
-                  <span class="method">🏦 MPesa</span>
+              </div>
+
+              <!-- METHOD PANEL: WESTERN UNION -->
+              <div id="panel-wu" class="pay-panel">
+                <div id="wu-demo-banner" class="pay-note-banner" style="display:none;">
+                  ⚠ <strong>Demo mode:</strong> In mock mode, enter any 10–16 digit MTCN to simulate verification.
                 </div>
-              </form>
+                <div id="wu-instructions" class="wu-instructions">
+                  <h4>🌍 Pay via Western Union</h4>
+                  <ol class="wu-steps">
+                    <li>Send your payment to our Western Union receiver (130+ currencies accepted).</li>
+                    <li>Visit a <strong>Western Union agent</strong>, the WU website, or the WU mobile app.</li>
+                    <li>Send to: <strong>Pascal Travels & Tour Ltd</strong> — Receiver Country: <strong>Kenya</strong>, City: <strong>Nairobi</strong>.</li>
+                    <li>You'll receive a <strong>Money Transfer Control Number (MTCN)</strong>.</li>
+                    <li>Enter the MTCN below — we verify it and confirm your booking.</li>
+                  </ol>
+                  <div class="wu-receiver-card">
+                    <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.4rem;">
+                      <div><span>Amount Due (KES)</span><strong id="wu-amount" class="text-gold">—</strong></div>
+                      <div><span>Receiver</span><strong id="wu-receiver">Pascal Travels & Tour Ltd</strong></div>
+                      <div><span>Country / City</span><strong>Kenya · Nairobi</strong></div>
+                    </div>
+                  </div>
+                </div>
+                <form id="wu-verify-form" class="notify-form">
+                  <h4>🔍 Verify My Payment (Enter MTCN)</h4>
+                  <div class="form-grid-2">
+                    <div class="form-field full">
+                      <label>MTCN (Money Transfer Control Number) <span class="text-red">*</span></label>
+                      <input type="text" name="mtcn" required placeholder="10–16 digit number, e.g. 1284947565123" minlength="10" maxlength="16" pattern="[0-9]{10,16}" title="MTCN is a 10–16 digit number" />
+                    </div>
+                    <div class="form-field">
+                      <label>Sender Full Name <span class="text-red">*</span></label>
+                      <input type="text" name="senderName" required placeholder="e.g. Jane Wanjiru Kamau" />
+                    </div>
+                    <div class="form-field">
+                      <label>Sender Country</label>
+                      <input type="text" name="senderCountry" placeholder="e.g. KE / Kenya" />
+                    </div>
+                    <div class="form-field">
+                      <label>Amount Sent</label>
+                      <input type="number" name="sendAmount" placeholder="e.g. 1500" min="1" />
+                    </div>
+                    <div class="form-field">
+                      <label>Send Currency</label>
+                      <select name="sendCurrency">
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                        <option value="GBP">GBP</option>
+                        <option value="KES">KES</option>
+                        <option value="AED">AED</option>
+                        <option value="CAD">CAD</option>
+                      </select>
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-gold btn-block">🔍 Verify Payment & Confirm Booking</button>
+                </form>
+                <div id="wu-verify-success" class="success-inline" style="display:none;">
+                  🎉 <strong>Payment verified!</strong> Your Western Union payment has been confirmed and your booking is now active.
+                </div>
+                <div id="wu-verify-error" class="alert alert-red" style="display:none;"></div>
+              </div>
             </div>
+
             <aside class="pay-summary-col">
               <div class="card card-gold pricing-card">
                 <h3>Order Summary</h3>
@@ -762,7 +1004,7 @@
             </ol>
           </div>
 
-          <div class="success-ctas">
+<div class="success-ctas">
             <button class="btn btn-gold btn-lg" data-nav="home">🏠 Back to Home</button>
             <button class="btn btn-outline btn-lg" onclick="window.print()">🖨️ Print Receipt</button>
           </div>
@@ -770,10 +1012,319 @@
       </div>
     </section>
 
+    <!-- ============= JOBS BOARD VIEW ============= -->
+    <section id="view-jobs" class="view">
+      <div class="container jobs-view">
+        <div class="jobs-header">
+          <div class="section-header">
+            <span class="eyebrow text-gold">EXPLORE JOBS</span>
+            <h2 class="section-title">Overseas <span class="text-gold-gradient">Job Opportunities</span></h2>
+            <p class="section-sub">Browse available jobs by country. Filter below or apply directly.</p>
+          </div>
+          <div class="jobs-toolbar">
+            <div class="jobs-search-wrap">
+              <input type="text" id="jobs-search" class="jobs-search" placeholder="🔍 Search jobs by title or country..." />
+            </div>
+            <div class="jobs-filter-wrap">
+              <select id="jobs-country-filter" class="jobs-filter">
+                <option value="">All Countries</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div id="jobs-grid" class="jobs-grid"></div>
+        <div id="jobs-empty" class="jobs-empty" style="display:none;">No jobs found matching your criteria.</div>
+      </div>
+
+      <!-- QUICK APPLY MODAL -->
+      <div id="apply-modal" class="modal-overlay" style="display:none;">
+        <div class="modal-card">
+          <button class="modal-close" data-close-apply>✕</button>
+          <h3>Quick Apply</h3>
+          <p id="apply-job-title" class="modal-job-title"></p>
+          <form id="apply-form" class="apply-form">
+            <input type="text" name="name" placeholder="Full name" required />
+            <input type="email" name="email" placeholder="Email address" required />
+            <input type="tel" name="phone" placeholder="Phone number" required />
+            <textarea name="message" placeholder="Brief message (optional)" rows="2"></textarea>
+            <button type="submit" class="btn btn-gold btn-block">Submit Application</button>
+          </form>
+          <div id="apply-success" class="apply-success" style="display:none;">✅ Your application has been received. Our team will contact you shortly.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= AGENT REGISTRATION VIEW ============= -->
+    <section id="view-agent-register" class="view">
+      <div class="container agent-register-view">
+        <div class="section-header">
+          <span class="eyebrow text-gold">PARTNER WITH US</span>
+          <h2 class="section-title">Agent <span class="text-gold-gradient">Registration</span></h2>
+          <p class="section-sub">Register your agency to supply candidates for overseas opportunities. Earn commissions on successful placements.</p>
+        </div>
+
+        <div class="agent-register-layout">
+          <div class="agent-benefits card card-white">
+            <h3>Why Partner With Us?</h3>
+            <ul>
+              <li>💼 Supply verified candidates for global jobs</li>
+              <li>💰 Earn <strong>commission</strong> on successful placements</li>
+              <li>📊 Track application status in real time</li>
+              <li>🌍 Work across Canada, UK, UAE, Australia &amp; more</li>
+              <li>🤝 Dedicated support and transparent process</li>
+            </ul>
+            <div class="agent-benefits-note">
+              <a class="btn btn-skyblue btn-block" data-nav="agent-login" data-view="agent-dashboard">🔑 Already Registered? Login</a>
+            </div>
+          </div>
+
+          <div class="card card-white agent-form-card">
+            <h3>Create Your Agent Account</h3>
+            <form id="agent-register-form" class="agent-form">
+              <div class="form-grid-2">
+                <div class="form-field">
+                  <label>Agency Name <span class="text-red">*</span></label>
+                  <input type="text" name="agencyName" required placeholder="e.g. Kings Recruitment Ltd" />
+                </div>
+                <div class="form-field">
+                  <label>Registration Number <span class="text-red">*</span></label>
+                  <input type="text" name="registrationNumber" required placeholder="Business registration no." />
+                </div>
+                <div class="form-field">
+                  <label>Contact Person Name <span class="text-red">*</span></label>
+                  <input type="text" name="contactPersonName" required placeholder="Full name" />
+                </div>
+                <div class="form-field">
+                  <label>Contact Person Email <span class="text-red">*</span></label>
+                  <input type="email" name="contactPersonEmail" required placeholder="agent@agency.com" />
+                </div>
+                <div class="form-field">
+                  <label>Phone Number <span class="text-red">*</span></label>
+                  <input type="tel" name="phone" required placeholder="+254 700 000 000" />
+                </div>
+                <div class="form-field">
+                  <label>Country of Operation <span class="text-red">*</span></label>
+                  <select name="countryOperation" required>
+                    <option value="">Select country...</option>
+                    <option>Kenya</option>
+                    <option>Tanzania</option>
+                    <option>Uganda</option>
+                    <option>Rwanda</option>
+                    <option>Ethiopia</option>
+                    <option>Nigeria</option>
+                    <option>Ghana</option>
+                    <option>South Africa</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Specialization <span class="text-red">*</span> (select all that apply)</label>
+                <div class="checkbox-grid" id="specialization-checkboxes">
+                  <label><input type="checkbox" name="specializations" value="Canada PR" /> Canada PR</label>
+                  <label><input type="checkbox" name="specializations" value="Canada Work Visa" /> Canada Work Visa</label>
+                  <label><input type="checkbox" name="specializations" value="UK Work Visa" /> UK Work Visa</label>
+                  <label><input type="checkbox" name="specializations" value="USA Visa" /> USA Visa</label>
+                  <label><input type="checkbox" name="specializations" value="Schengen Visa" /> Schengen Visa</label>
+                  <label><input type="checkbox" name="specializations" value="Australia Visa" /> Australia Visa</label>
+                  <label><input type="checkbox" name="specializations" value="Student Visa" /> Student Visa</label>
+                  <label><input type="checkbox" name="specializations" value="Other" /> Other</label>
+                </div>
+              </div>
+              <div class="form-field">
+                <label>Approximate Number of Candidates Supplied per Month <span class="text-red">*</span></label>
+                <input type="number" name="monthlyCandidates" min="0" required placeholder="e.g. 20" />
+              </div>
+              <div class="form-field">
+                <label>Password (min 6 characters) <span class="text-red">*</span></label>
+                <input type="password" name="password" minlength="6" required placeholder="Create a password" />
+              </div>
+              <div id="agent-form-error" class="alert alert-red" style="display:none;"></div>
+              <button type="submit" class="btn btn-gold btn-block">Register Your Agency</button>
+              <p class="agent-form-note">By registering, you agree to our terms. Accounts are reviewed and approved by our team.</p>
+            </form>
+            <div id="agent-register-success" class="agent-success" style="display:none;">
+              🎉 <strong>Registration received!</strong> Your account is pending approval. We will notify you once reviewed.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= AGENT DASHBOARD VIEW ============= -->
+    <section id="view-agent-dashboard" class="view">
+      <div class="container agent-dashboard-view">
+        <div class="section-header">
+          <span class="eyebrow text-gold">AGENT PORTAL</span>
+          <h2 class="section-title">Agent <span class="text-gold-gradient">Dashboard</span></h2>
+          <p class="section-sub">Login to submit candidates, track applications, and view commissions.</p>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <div id="agent-login-box" class="card card-white agent-login-box">
+          <h3>Agent Login</h3>
+          <form id="agent-login-form" class="agent-form">
+            <div class="form-field">
+              <label>Email <span class="text-red">*</span></label>
+              <input type="email" name="email" required placeholder="agent@agency.com" />
+            </div>
+            <div class="form-field">
+              <label>Password <span class="text-red">*</span></label>
+              <input type="password" name="password" required placeholder="Your password" />
+            </div>
+            <div id="agent-login-error" class="alert alert-red" style="display:none;"></div>
+            <button type="submit" class="btn btn-skyblue btn-block">Login to Dashboard</button>
+            <p class="agent-form-note">Not registered yet? <a href="#" data-nav="agent-register" data-view="agent-register"><strong>Register as an agent</strong></a></p>
+          </form>
+        </div>
+
+        <!-- DASHBOARD CONTENT -->
+        <div id="agent-dashboard-content" style="display:none;">
+          <div class="agent-dash-header">
+            <div>
+              <h3 id="agent-agency-name" class="text-gold-gradient"></h3>
+              <div id="agent-status-badge" class="agent-status-badge"></div>
+            </div>
+            <button id="agent-logout" class="btn btn-outline btn-sm">Logout</button>
+          </div>
+
+          <div class="agent-stats">
+            <div class="stat-card card card-white"><span class="stat-num" id="stat-total">0</span><span>Total Candidates</span></div>
+            <div class="stat-card card card-white"><span class="stat-num" id="stat-submitted">0</span><span>Submitted</span></div>
+            <div class="stat-card card card-white"><span class="stat-num" id="stat-accepted">0</span><span>Accepted</span></div>
+            <div class="stat-card card card-white"><span class="stat-num" id="stat-commission">$0</span><span>Commissions</span></div>
+          </div>
+
+          <div class="agent-dash-grid">
+            <div class="card card-white agent-submit-card">
+              <h3>+ Submit New Candidate</h3>
+              <form id="candidate-form" class="agent-form">
+                <div class="form-grid-2">
+                  <div class="form-field">
+                    <label>Candidate Name <span class="text-red">*</span></label>
+                    <input type="text" name="candidateName" required placeholder="Full name" />
+                  </div>
+                  <div class="form-field">
+                    <label>Candidate Email <span class="text-red">*</span></label>
+                    <input type="email" name="candidateEmail" required placeholder="candidate@email.com" />
+                  </div>
+                  <div class="form-field">
+                    <label>Candidate Phone <span class="text-red">*</span></label>
+                    <input type="tel" name="candidatePhone" required placeholder="+254 700 000 000" />
+                  </div>
+                  <div class="form-field">
+                    <label>Country of Interest <span class="text-red">*</span></label>
+                    <select name="countryInterest" required>
+                      <option value="">Select country...</option>
+                      <option>Canada</option>
+                      <option>UK</option>
+                      <option>USA</option>
+                      <option>Australia</option>
+                      <option>UAE</option>
+                      <option>Germany</option>
+                      <option>Qatar</option>
+                      <option>Saudi Arabia</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label>Visa Type <span class="text-red">*</span></label>
+                    <select name="visaType" required>
+                      <option value="">Select visa type...</option>
+                      <option>Work Visa</option>
+                      <option>Student Visa</option>
+                      <option>Travel Visa</option>
+                      <option>Canada PR</option>
+                      <option>Schengen Visa</option>
+                      <option>Other</option>
+                    </select>
+                  </div>
+                  <div class="form-field">
+                    <label>CV / Resume (filename)</label>
+                    <input type="text" name="cvFilename" placeholder="e.g. candidate_cv.pdf" />
+                  </div>
+                </div>
+                <div class="form-field">
+                  <label>Notes</label>
+                  <textarea name="notes" rows="2" placeholder="Additional notes (optional)"></textarea>
+                </div>
+                <div id="candidate-form-error" class="alert alert-red" style="display:none;"></div>
+                <button type="submit" class="btn btn-gold btn-block">Submit Candidate</button>
+              </form>
+              <div id="candidate-success" class="agent-success" style="display:none;">✅ Candidate submitted successfully.</div>
+            </div>
+
+            <div class="card card-white agent-candidates-card">
+              <h3>My Candidates</h3>
+              <div id="agent-candidates-list" class="agent-candidates-list"></div>
+              <div id="agent-candidates-empty" class="jobs-empty">No candidates submitted yet.</div>
+            </div>
+          </div>
+
+          <div class="card card-white agent-commissions-card">
+            <h3>Commissions &amp; Payments</h3>
+            <div id="agent-commissions-list" class="agent-commissions-list"></div>
+            <div id="agent-commissions-empty" class="jobs-empty">No commissions recorded yet.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= WHATSAPP AI CONSULTATION MODAL ============= -->
+    <div id="whatsapp-modal" class="modal-overlay wa-modal-overlay" style="display:none;">
+      <div class="modal-card wa-modal-card">
+        <div class="wa-modal-header">
+          <div class="wa-agent-avatar">🤖</div>
+          <div>
+            <h3>Pascal Travels AI Assistant</h3>
+            <span class="wa-online">● Online 24/7</span>
+          </div>
+          <button class="modal-close" data-close-whatsapp>✕</button>
+        </div>
+        <div id="wa-chat" class="wa-chat">
+          <div class="wa-msg wa-msg-bot">
+            👋 <strong>Hello and welcome to Pascal Travels &amp; Tour!</strong> I'm your AI travel assistant.
+            I can help you book a consultation for visas, jobs abroad, study, Canada PR, or East Africa tours.
+            <br/><br/>To get started, could you tell me:
+            <br/>1️⃣ What is your <strong>destination</strong> country?
+            <br/>2️⃣ Your preferred <strong>travel dates</strong>?
+            <br/>3️⃣ Your <strong>group size</strong>?
+            <br/>4️⃣ Your <strong>budget</strong>?
+          </div>
+        </div>
+        <div id="wa-quick-options" class="wa-quick-options">
+          <button class="wa-quick" data-quick="visa">🛂 Visa</button>
+          <button class="wa-quick" data-quick="job">💼 Job Abroad</button>
+          <button class="wa-quick" data-quick="study">🎓 Study</button>
+          <button class="wa-quick" data-quick="pr">🍁 Canada PR</button>
+          <button class="wa-quick" data-quick="tour">🌍 East Africa Tour</button>
+          <button class="wa-quick" data-quick="human">🧑‍💼 Talk to Human</button>
+        </div>
+        <form id="wa-input-form" class="wa-input-form">
+          <input type="text" id="wa-input" placeholder="Type your message..." autocomplete="off" />
+          <button type="submit" class="btn btn-skyblue wa-send-btn">➤</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ============= PREMIUM WHATSAPP FLOATING WIDGET ============= -->
+    <div class="wa-widget-wrap">
+      <div class="wa-widget-text" id="wa-widget-text">Chat with us on WhatsApp</div>
+      <button id="wa-widget-btn" class="wa-widget-btn" aria-label="Chat with us on WhatsApp">
+        <span class="wa-widget-icon">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="#fff" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.87 9.87 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91C21.96 6.45 17.5 2 12.04 2zm5.83 14.12c-.25.7-1.45 1.33-2.02 1.42-.52.08-1.17.11-1.88-.12-.43-.14-.98-.32-1.69-.63-2.97-1.28-4.9-4.27-5.05-4.47-.15-.2-1.21-1.61-1.21-3.07 0-1.46.77-2.18 1.04-2.48.27-.3.59-.37.79-.37h.57c.18 0 .43-.07.67.51.25.6.85 2.07.92 2.22.07.15.12.33.03.53-.1.2-.15.32-.3.5-.15.17-.31.39-.44.52-.15.15-.31.31-.13.6.17.3.77 1.27 1.66 2.06 1.14 1.02 2.1 1.34 2.4 1.49.3.15.47.13.65-.08.17-.2.75-.87.95-1.17.2-.3.4-.25.67-.15.27.1 1.71.81 2 .96.3.15.5.22.57.35.07.12.07.72-.18 1.42z"/>
+          </svg>
+        </span>
+        <span class="wa-widget-pulse"></span>
+      </button>
+    </div>
+
   </main>
 
-  <script src="data/requirements.js"></script>
+<script src="data/requirements.js"></script>
   <script src="data/packages.js"></script>
+  <script src="data/jobs.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

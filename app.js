@@ -1540,6 +1540,169 @@ function waQuote(text) { return String(text).replace(/&/g, '&amp;').replace(/</g
     }
   }
 
+  async function loginAgent(event) {
+    const form = $('#agent-login-form');
+    if (!form) return;
+    event.preventDefault();
+    const email = form.elements.email?.value || '';
+    const password = form.elements.password?.value || '';
+    const errEl = $('#agent-login-error');
+    if (errEl) errEl.style.display = 'none';
+
+    try {
+      const res = await fetch(`${AGENT_API}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        if (errEl) { errEl.textContent = data.error || 'Login failed. Check credentials.'; errEl.style.display = 'block'; }
+        return;
+      }
+      // Store session
+      setAgentSession({ ...data.agent, token: data.token });
+      showAgentDashboard();
+    } catch (e) {
+      if (errEl) { errEl.textContent = 'Network error. Please try again.'; errEl.style.display = 'block'; }
+    }
+  }
+
+  function showAgentDashboard() {
+    const loginBox = $('#agent-login-box');
+    const dashboardContent = $('#agent-dashboard-content');
+    const session = getAgentSession();
+    if (!session) return;
+
+    if (loginBox) loginBox.style.display = 'none';
+    if (dashboardContent) dashboardContent.style.display = 'block';
+
+    // Display agent info
+    const agentNameEl = $('#agent-name-display');
+    if (agentNameEl) agentNameEl.textContent = session.contactPersonName || session.agencyName || 'Agent';
+
+    // Load candidate submissions
+    loadAgentCandidates();
+  }
+
+  async function loadAgentCandidates() {
+    const session = getAgentSession();
+    if (!session) return;
+    const list = $('#agent-candidates-list');
+    if (!list) return;
+    list.innerHTML = '<div class="skeleton skeleton-text" style="height:40px;"></div><div class="skeleton skeleton-text" style="height:40px;"></div>';
+    
+    try {
+      const res = await fetch(`${AGENT_API}/${session.id}/candidates`, {
+        headers: { 'Authorization': `Bearer ${session.token}` }
+      });
+      const data = await res.json().catch(() => ({ candidates: [] }));
+      const candidates = data.candidates || [];
+      if (candidates.length === 0) {
+        list.innerHTML = '<p style="text-align:center;color:var(--text-muted);">No candidates submitted yet.</p>';
+        return;
+      }
+      list.innerHTML = candidates.map(c => `
+        <div class="candidate-row">
+          <div>
+            <div class="candidate-name">${c.candidateName}</div>
+            <div class="candidate-email">${c.email}</div>
+          </div>
+          <div class="candidate-status">
+            <span class="badge ${c.status === 'approved' ? 'badge-success' : c.status === 'rejected' ? 'badge-danger' : 'badge-warning'}">${c.status || 'pending'}</span>
+          </div>
+        </div>
+      `).join('');
+    } catch (e) {
+      list.innerHTML = '<p style="color:var(--red);">Failed to load candidates.</p>';
+    }
+  }
+
+  async function submitAgentCandidate(event) {
+    const form = $('#agent-submit-candidate-form');
+    if (!form) return;
+    event.preventDefault();
+    const session = getAgentSession();
+    if (!session) { alert('Please login first.'); return; }
+
+    const fd = new FormData(form);
+    const payload = {
+      candidateName: fd.get('candidateName'),
+      email: fd.get('email'),
+      phone: fd.get('phone'),
+      country: fd.get('country'),
+      visaType: fd.get('visaType'),
+      cvFile: fd.get('cvFile'),
+      passportCopy: fd.get('passportCopy')
+    };
+
+    const btn = form.querySelector('button[type="submit"]');
+    const original = btn.textContent;
+    btn.textContent = '⏳ Submitting...';
+    btn.disabled = true;
+
+    try {
+      const res = await fetch(`${AGENT_API}/${session.id}/candidates`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${session.token}` },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { alert(data.error || 'Submission failed'); btn.textContent = original; btn.disabled = false; return; }
+      alert('✓ Candidate submitted for review!');
+      form.reset();
+      loadAgentCandidates();
+      btn.textContent = original;
+      btn.disabled = false;
+    } catch (e) {
+      alert('Error: ' + e.message);
+      btn.textContent = original;
+      btn.disabled = false;
+    }
+  }
+
+  function logoutAgent() {
+    clearAgentSession();
+    const loginBox = $('#agent-login-box');
+    const dashboardContent = $('#agent-dashboard-content');
+    if (loginBox) loginBox.style.display = 'block';
+    if (dashboardContent) dashboardContent.style.display = 'none';
+    const form = $('#agent-login-form');
+    if (form) form.reset();
+  }
+
+  function initAgentSystem() {
+    // Check if agent is already logged in
+    const session = getAgentSession();
+    if (session) {
+      showAgentDashboard();
+    }
+
+    // Register form
+    const registerForm = $('#agent-register-form');
+    if (registerForm) {
+      registerForm.addEventListener('submit', registerAgent);
+    }
+
+    // Login form
+    const loginForm = $('#agent-login-form');
+    if (loginForm) {
+      loginForm.addEventListener('submit', loginAgent);
+    }
+
+    // Submit candidate form
+    const candidateForm = $('#agent-submit-candidate-form');
+    if (candidateForm) {
+      candidateForm.addEventListener('submit', submitAgentCandidate);
+    }
+
+    // Logout button
+    const logoutBtn = $('#agent-logout-btn');
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', logoutAgent);
+    }
+  }
+
   function init() {
     renderServices();
     renderVisaPackages('travel');
